@@ -56,21 +56,21 @@ The project uses a monorepo structure for managing microservices:
    ```
    npm install
    ```
-<F11><F11>
+
 ### Running the Services
 
 1. **Authentication Service**:
    ```
    npm run start:dev auth
    ```
-
+   
 2. **Shelves Service**:
-   ```
+  ```
   npm run start:dev shelves
-   ```
+  ```
 
 3. **Study Space Locator Service**:
-   ```
+```
   npm run start:dev spaces
    ```
 
@@ -94,4 +94,3 @@ Each service will have its own API documentation, accessible via Swagger (if ena
 ### License
 
 This project is licensed under the MIT License.
-# buddy
