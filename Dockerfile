@@ -1,6 +1,8 @@
 # Use the official Node.js image as the base image
 FROM node:lts-iron
 
+LABEL org.opencontainers.image.source=https://github.com/Phastboy/buddy
+
 # Set the working directory
 WORKDIR /usr/src/app
 
