@@ -1,3 +1,5 @@
+name: buddy
+
 services:
   mongo:
     image: mongo:5
