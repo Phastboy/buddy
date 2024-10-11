@@ -2,6 +2,8 @@
 FROM node:lts-iron
 
 LABEL org.opencontainers.image.source=https://github.com/Phastboy/buddy
+LABEL org.opencontainers.image.description="Buddy is a comprehensive web application designed to enhance learning experiences."
+LABEL org.opencontainers.image.description=MIT
 
 # Set the working directory
 WORKDIR /usr/src/app
