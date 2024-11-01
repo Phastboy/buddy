@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { RmqModule } from '@app/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -12,6 +14,13 @@ import { ConfigModule } from '@nestjs/config';
       }
     ),
     RmqModule.register('auth'),
+    MongooseModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.getOrThrow('LOCAL_MONGODB_URI'),
+      }),
+      inject: [ConfigService],
+    }),
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
