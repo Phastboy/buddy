@@ -1,7 +1,8 @@
+// Example usage in a module, e.g., `AuthModule`
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { RmqModule } from '@app/common';
+import { AuthController } from './auth.controller';
+import { RmqModule } from '@app/common/rmq/rmq.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
