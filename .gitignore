@@ -1,7 +1,10 @@
 # compiled output
 /dist
+/apps/*/dist/
 /node_modules
+apps/*/node_modules
 /build
+/.turbo
 
 # Logs
 logs
@@ -37,10 +40,14 @@ lerna-debug.log*
 
 # dotenv environment variable files
 .env
+apps/*/.env
 .env.development.local
 .env.test.local
 .env.production.local
 .env.local
+apps/*/.env.development.local
+apps/*/.env.test.local
+apps/*/.env.local
 
 # temp directory
 .temp
