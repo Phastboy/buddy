@@ -1,45 +1,54 @@
 # Buddy
 
-Buddy is an educational platform designed to streamline the learning process for students. It provides features such as user authentication, educational resource collections (Shelves), crowd-sourced study space recommendations with reviews, and an admin dashboard for content management. The backend is built using a microservices architecture with NestJS, MongoDB, Redis, and JWT for security and scalability.
+Buddy is a platform designed to enhance learning for students, with features focused on resource organization, study space discovery, and easy management for admins. Built using a microservices architecture, Buddy ensures secure, scalable backend operations with technologies like NestJS, MongoDB, Redis, JWT, and RabbitMQ.
 
 ## Features
 
-- **User Authentication**: Secure local and OAuth login (Google, Facebook).
-- **Shelves**: Collect and manage educational resources.
-- **Crowd-sourced Study Space Locator**: Add, review, and search for study spaces in your area.
-- **Admin Dashboard**: Manage users, resources, and study spaces.
+- **User Authentication**: Secure login with local and OAuth (Google, Facebook) support.
+- **Shelves**: Personalized educational resource collections for streamlined access.
+- **Crowd-sourced Study Space Locator**: Locate, review, and share study spaces based on user-contributed recommendations.
+- **Admin Dashboard**: Centralized management for users, resources, and study spaces.
 
 ## Architecture
 
-Buddy follows a microservices architecture organized within a monorepo structure. Each service is isolated to improve maintainability and scalability. The services communicate via RESTful APIs and share a common authentication layer using JWT.
+Buddy’s backend follows a microservices architecture managed within a monorepo using Turborepo. Each service operates independently to enhance modularity, maintainability, and scalability, with inter-service communication facilitated by RabbitMQ. Swagger documentation has been set up for easy API reference.
 
-### Services
+### Services Overview
 
-1. **Authentication Service**: Manages user registration, login, and JWT token issuance.
-2. **Shelves Service**: Allows users to add and manage educational resources.
-3. **Study Space Locator Service**: Facilitates adding, reviewing, and searching for study spaces.
-4. **Buddy Service**: The main service that aggregates data from other services and provides a unified API. The admin dashboard is also part of this service.
+1. **Authentication Service**:
+   - Manages user registration, login, and JWT issuance.
+   - Configured with Passport.js for local authentication and RabbitMQ for microservices communication.
+   
+2. **Shelves Service**:
+   - Provides functionality for users to add, manage, and organize educational resources.
+   
+3. **Study Space Locator Service**:
+   - Handles the addition, review, and search of study spaces by users.
+
+4. **Buddy Service**:
+   - Serves as the central hub, aggregating data from other services.
+   - Houses the admin dashboard and exposes the unified API to the frontend.
 
 ### Tech Stack
 
 - **Backend**: [NestJS](https://nestjs.com)
-- **Database**: [MongoDB](https://www.mongodb.com)
-- **ORM**: [Mongoose](https://mongoosejs.com)
+- **Frontend**: [NextJS](https://nextjs.org)
+- **Database**: [MongoDB](https://www.mongodb.com), managed with [Mongoose](https://mongoosejs.com)
 - **Caching/Session Management**: [Redis](https://redis.io)
 - **Authentication**: JWT, [Passport.js](http://www.passportjs.org)
-- **Communication**: REST APIs
+- **Message Broker**: RabbitMQ for inter-service communication
+- **Documentation**: Swagger setup for API documentation
 
 ## Monorepo Structure
 
-The project uses a monorepo structure for managing microservices:
+Buddy leverages Turborepo to streamline dependency management and task execution across its microservices, ensuring efficient build and development workflows.
 
 ```
-/buddy
-  /apps
-    /auth
-    /shelves
-    /spaces
-    /buddy (main service)
+/auth             # User authentication microservice
+/shelves          # Shelves microservice for educational resources
+/spaces           # Study space locator microservice
+/buddy            # Central service and entry point, includes admin dashboard
+/client           # Frontend client application
 ```
 
 ## Getting Started
@@ -54,51 +63,40 @@ The project uses a monorepo structure for managing microservices:
 
 1. Clone the repository:
 
-   ```
+   ```bash
    git clone https://github.com/Phastboy/buddy.git
    cd buddy
    ```
 
-2. Install dependencies:
-   ```
+2. Install dependencies using Turborepo:
+
+   ```bash
    npm install
    ```
 
 ### Running the Services
 
-1. **Authentication Service**:
-   ```
-   npm run start:dev auth
-   ```
-2. **Shelves Service**:
+To start all services concurrently, use Turborepo:
 
-```
-npm run start:dev shelves
-```
-
-3. **Study Space Locator Service**:
-
-```
-  npm run start:dev spaces
-```
-
-4.  **Buddy (main service)**:
-
-```
-npm run start:dev
+```bash
+npm run dev
 ```
 
 ### API Documentation
 
-To access the API docs, navigate to the service’s base URL `http://localhost:3000`.
+Access the Swagger-based API docs by navigating to the main service's URL at `http://localhost:<PORT>/`, where `<PORT>` is the port number defined in your environment (`3012` by default). For example, if no custom port is specified, visit:
+
+```
+http://localhost:3012/
+```
 
 ### Contributing
 
 1. Fork the project
-2. Create a feature branch: `git checkout -b feature/my-new-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/my-new-feature`
-5. Submit a pull request
+2. Create a new feature branch: `git checkout -b feature/my-new-feature`
+3. Commit changes: `git commit -m 'Add some feature'`
+4. Push the branch: `git push origin feature/my-new-feature`
+5. Open a pull request
 
 ### License
 
