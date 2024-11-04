@@ -1,0 +1,6 @@
+{
+  "name": "auth",
+  "scripts": {
+    "dev": "nest start --watch --preserveWatchOutput"
+  }
+}

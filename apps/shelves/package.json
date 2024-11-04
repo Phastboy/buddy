@@ -1,0 +1,7 @@
+{
+  "name": "shelves",
+  "scripts": {
+    "dev": "nest start --watch --preserveWatchOutput"
+  }
+}
+
