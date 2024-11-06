@@ -1,97 +1,81 @@
-# Buddy
+# Turborepo starter
 
-Buddy is an educational platform designed to streamline the learning process for students. It provides features such as user authentication, educational resource collections (Shelves), crowd-sourced study space recommendations with reviews, and an admin dashboard for content management. The backend is built using a microservices architecture with NestJS, MongoDB, Redis, and JWT for security and scalability.
+This is an official starter Turborepo.
 
-## Features
-- **User Authentication**: Secure local and OAuth login (Google, Facebook).
-- **Shelves**: Collect and manage educational resources.
-- **Crowd-sourced Study Space Locator**: Add, review, and search for study spaces in your area.
-- **Admin Dashboard**: Manage users, resources, and study spaces.
+## Using this example
 
-## Architecture
-Buddy follows a microservices architecture organized within a monorepo structure. Each service is isolated to improve maintainability and scalability. The services communicate via RESTful APIs and share a common authentication layer using JWT.
+Run the following command:
 
-### Services
-1. **Authentication Service**: Manages user registration, login, and JWT token issuance.
-2. **Shelves Service**: Allows users to add and manage educational resources.
-3. **Study Space Locator Service**: Facilitates adding, reviewing, and searching for study spaces.
-4. **Buddy Service**: The main service that aggregates data from other services and provides a unified API. The admin dashboard is also part of this service.
-### Tech Stack
-- **Backend**: [NestJS](https://nestjs.com)
-- **Database**: [MongoDB](https://www.mongodb.com)
-- **ORM**: [Mongoose](https://mongoosejs.com)
-- **Caching/Session Management**: [Redis](https://redis.io)
-- **Authentication**: JWT, [Passport.js](http://www.passportjs.org)
-- **Communication**: REST APIs
-
-## Monorepo Structure
-
-The project uses a monorepo structure for managing microservices:
-
-```
-/buddy
-  /apps
-    /auth
-    /shelves
-    /spaces
-    /buddy (main service)
+```sh
+npx create-turbo@latest
 ```
 
-## Getting Started
+## What's inside?
 
-### Prerequisites
-- **Node.js**: v18.x or higher
-- **MongoDB**: v5.x or higher
-- **Redis**: v6.x or higher
+This Turborepo includes the following packages/apps:
 
-### Installation
+### Apps and Packages
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/Phastboy/buddy.git
-   cd buddy
-   ```
+- `docs`: a [Next.js](https://nextjs.org/) app
+- `web`: another [Next.js](https://nextjs.org/) app
+- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
+- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
-<F11><F11>
-### Running the Services
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-1. **Authentication Service**:
-   ```
-   npm run start:dev auth
-   ```
+### Utilities
 
-2. **Shelves Service**:
-   ```
-  npm run start:dev shelves
-   ```
+This Turborepo has some additional tools already setup for you:
 
-3. **Study Space Locator Service**:
-   ```
-  npm run start:dev spaces
-   ```
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
 
-   4. **Buddy (main service)**:
-   ```
-   npm run start:dev
-   ```
+### Build
 
-### API Documentation
+To build all apps and packages, run the following command:
 
-Each service will have its own API documentation, accessible via Swagger (if enabled). To access the API docs, navigate to the service’s base URL (e.g., `http://localhost:3000/api`).
+```
+cd my-turborepo
+pnpm build
+```
 
-### Contributing
+### Develop
 
-1. Fork the project
-2. Create a feature branch: `git checkout -b feature/my-new-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/my-new-feature`
-5. Submit a pull request
+To develop all apps and packages, run the following command:
 
-### License
+```
+cd my-turborepo
+pnpm dev
+```
 
-This project is licensed under the MIT License.
-# buddy
+### Remote Caching
+
+Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+
+By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+
+```
+cd my-turborepo
+npx turbo login
+```
+
+This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+
+Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+
+```
+npx turbo link
+```
+
+## Useful Links
+
+Learn more about the power of Turborepo:
+
+- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)

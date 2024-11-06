@@ -1,6 +1,0 @@
-{
-  "name": "spaces",
-  "scripts": {
-    "dev": "nest start --watch --preserveWatchOutput"
-  }
-}

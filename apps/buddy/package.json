@@ -1,6 +1,0 @@
-{
-  "name": "buddy",
-  "scripts": {
-    "dev": "nest start --watch --preserveWatchOutput"
-  }
-}

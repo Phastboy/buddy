@@ -1,11 +1,32 @@
+name: buddy
+
 services:
   mongo:
     image: mongo:5
     container_name: mongo
     ports:
-      - "27017:27017"
+      - "27015:27017"
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "nc", "-z", "mongo", "27017"]
+      interval: 30s
+      retries: 3
+    networks:
+      - buddy-network
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    ports:
+      - "5673:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "rabbitmq", "5672"]
+      interval: 30s
+      retries: 3
+    networks:
+      - buddy-network
 
   auth:
     build:
@@ -15,8 +36,14 @@ services:
       - "3001:3000"
     environment:
       MONGO_URI: mongodb://mongo:27017/buddy
+      RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - buddy-network
 
   shelves:
     build:
@@ -27,7 +54,10 @@ services:
     environment:
       MONGO_URI: mongodb://mongo:27017/buddy
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+    networks:
+      - buddy-network
 
   spaces:
     build:
@@ -38,7 +68,14 @@ services:
     environment:
       MONGO_URI: mongodb://mongo:27017/buddy
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+    networks:
+      - buddy-network
 
 volumes:
   mongo-data:
+
+networks:
+  buddy-network:
+    driver: bridge
