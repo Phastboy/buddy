@@ -5,7 +5,7 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/buddy/tsconfig.app.json"
+    "tsConfigPath": "apps/buddy/tsconfig.json"
   },
   "monorepo": true,
   "root": "apps/buddy",
@@ -16,7 +16,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/buddy/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/buddy/tsconfig.app.json"
+        "tsConfigPath": "apps/buddy/tsconfig.json"
       }
     },
     "auth": {
@@ -25,7 +25,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/auth/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/auth/tsconfig.app.json"
+        "tsConfigPath": "apps/auth/tsconfig.json"
       }
     },
     "shelves": {
@@ -34,7 +34,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/shelves/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/shelves/tsconfig.app.json"
+        "tsConfigPath": "apps/shelves/tsconfig.json"
       }
     },
     "spaces": {
@@ -43,16 +43,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/spaces/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/spaces/tsconfig.app.json"
-      }
-    },
-    "common": {
-      "type": "library",
-      "root": "libs/common",
-      "entryFile": "index",
-      "sourceRoot": "libs/common/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/common/tsconfig.lib.json"
+        "tsConfigPath": "apps/spaces/tsconfig.json"
       }
     }
   }
