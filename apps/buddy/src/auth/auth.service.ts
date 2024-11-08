@@ -1,22 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   constructor(@Inject('RABBITMQ_AUTH_CLIENT') private client: ClientProxy) {}
 
-  create(createAuthDto: CreateAuthDto) {
-    return {
-      createAuthDto,
-    }
-  }
-
-
-  getHello(): any {
-    return {
-      message: 'Auth feature coming soon!',
-      description: 'This feature is currently under development.',
-    };
+  async send(pattern: string, data: any) {
+    return await lastValueFrom(this.client.send(pattern, data), {
+        defaultValue: {
+            status: 'error',
+            message: 'No response from auth microservice'
+        }
+    });
   }
 }
