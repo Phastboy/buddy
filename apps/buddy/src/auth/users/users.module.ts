@@ -3,20 +3,12 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthService } from '../auth.service';
+import { RmqModule } from '../../rmq/rmq.module';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'RABBITMQ_AUTH_CLIENT',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://localhost:5672'],
-          queue: 'auth',
-          queueOptions: { durable: true },
-        },
-      },
-    ]),],
+    RmqModule.register('auth'),
+    ],
   controllers: [UsersController],
   providers: [UsersService, AuthService],
   exports: [UsersService]
