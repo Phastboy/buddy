@@ -36,6 +36,7 @@ export class RmqModule {
                 queue,
                 queueOptions: {
                   durable: configService.get<boolean>('RABBITMQ_QUEUE_DURABLE', true),
+                  noAck: configService.get<boolean>('RABBITMQ_NO_ACK', false),
                 },
               },
             });
