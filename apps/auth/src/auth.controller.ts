@@ -22,11 +22,18 @@ export class AuthController {
 
             const pattern = { role: 'auth', cmd: 'registered' };
             await this.authService.emitEvent(pattern, user);
-            
+
             Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
             Logger.log(`User created: ${user.username}`, 'AuthController');
         } catch (error) {
             Logger.error(`Failed to create user: ${data.username}. Error: ${error.message}`, error.stack, 'AuthController');
+            throw new Error(`Failed to create user: ${data.username}. Error: ${error.message}`);
         }
+    }
+
+    @EventPattern({ role: 'auth', cmd: 'registered' })
+    async registered(data: any) {
+        Logger.log('Received registered event', 'AuthController');
+        Logger.log(`Data: ${JSON.stringify(data)}`, 'AuthController');
     }
 }
