@@ -5,30 +5,30 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('auth')
 export class AuthController {
-  constructor(@Inject('RABBITMQ_AUTH_CLIENT') private client: ClientProxy,
-  private readonly authClient: AuthService
+  constructor(
+    @Inject('RABBITMQ_AUTH_CLIENT') private client: ClientProxy,
+    private readonly authService: AuthService
   ) {}
 
   @Post('users/register')
   async register(@Body() createUserDto: CreateUserDto) {
     try {
-      Logger.log('request is made from the browser to register a user', 'HTTP')
-      const response = await this.authClient.send('user.register', createUserDto);
-
-      Logger.log(response, 'send user.register response');
-
-      const { current, next } = response;
+      Logger.log('Received registration request', 'AuthController');
       
-      Logger.log(current?.status, 'send user.register response status');
-      if (current) {
-        return {
-          status: current.status,
-          message: current.data || current.message
-        };
-      }
+      // Emit user registration event
+      await this.authService.emitEvent({ role: 'auth', cmd: 'register' }, createUserDto);
+      Logger.log('user.register event emitted', 'AuthController');
+
+      // Respond to the client without waiting for event result
+      return { statusCode: 202, message: 'Registration request received. Processing...' };
+
     } catch (error) {
-      Logger.error(`Registration error: ${JSON.stringify(error)}`, 'Users controller register Method');
-      return { statusCode: 500, message: 'An error occurred during registration', details: error.message };
-    }    
+      Logger.error(`Registration error: ${error.message}`, error.stack, 'AuthController');
+      return {
+        statusCode: 500,
+        message: 'An error occurred during registration',
+        details: error.message
+      };
+    }
   }
 }
