@@ -12,7 +12,7 @@ import { UsersModule } from './users/users.module';
         isGlobal: true,
       }
     ),
-    RmqModule.register('auth'),
+    RmqModule.register('auth', false),
     UsersModule,
   ],
   controllers: [AuthController],
