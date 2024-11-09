@@ -9,11 +9,18 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.client.emit(pattern, data).subscribe({
         complete: () => {
-          Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthService');
+          Logger.log(
+            `Event emitted for pattern: ${JSON.stringify(pattern)}`,
+            'AuthService',
+          );
           resolve(true);
         },
         error: (err) => {
-          Logger.error(`Failed to emit event for pattern: ${JSON.stringify(pattern)}. Error: ${err.message}`, err.stack, 'AuthService');
+          Logger.error(
+            `Failed to emit event for pattern: ${JSON.stringify(pattern)}. Error: ${err.message}`,
+            err.stack,
+            'AuthService',
+          );
           reject(err);
         },
       });

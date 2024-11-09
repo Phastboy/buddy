@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ShelvesModule } from './shelves.module';
 import { Logger } from '@nestjs/common';
 
-const port=process.env.PORT || 3101;
+const port = process.env.PORT || 3101;
 
 async function bootstrap() {
   const app = await NestFactory.create(ShelvesModule);
