@@ -15,9 +15,11 @@ export class AuthController {
     try {
       Logger.log('Received registration request', 'AuthController');
       
+      // Define the event pattern
+      const pattern = { role: 'auth', cmd: 'register' };
       // Emit user registration event
-      await this.authService.emitEvent({ role: 'auth', cmd: 'register' }, createUserDto);
-      Logger.log('user.register event emitted', 'AuthController');
+      await this.authService.emitEvent(pattern, createUserDto);
+      Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
 
       // Respond to the client without waiting for event result
       return { statusCode: 202, message: 'Registration request received. Processing...' };

@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
 import { RmqModule } from './rmq/rmq.module';
-import { UsersController } from './users/users.controller';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -20,9 +19,8 @@ import { UsersController } from './users/users.controller';
       }),
       inject: [ConfigService],
     }),
-    UsersModule,
   ],
-  controllers: [UsersController],
+  controllers: [AuthController],
   providers: [AuthService],
 })
 export class AuthModule {}
