@@ -4,16 +4,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RmqModule } from './rmq/rmq.module';
 import { AuthController } from './auth.controller';
-import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(
-      {
-        isGlobal: true,
-      }
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     RmqModule.register('auth', true),
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
@@ -21,7 +18,7 @@ import { UsersModule } from './users/users.module';
       }),
       inject: [ConfigService],
     }),
-    UsersModule
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],

@@ -5,11 +5,9 @@ import { AuthService } from '../auth.service';
 import { RmqModule } from '../../rmq/rmq.module';
 
 @Module({
-  imports: [
-    RmqModule.register('auth', false),
-    ],
+  imports: [RmqModule.register('auth', false)],
   controllers: [UsersController],
   providers: [UsersService, AuthService],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {}
