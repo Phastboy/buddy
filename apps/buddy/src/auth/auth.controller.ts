@@ -2,6 +2,7 @@ import { Controller, Post, Body, Logger, Inject } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './users/dto/create-user.dto';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Controller('auth')
 export class AuthController {
@@ -18,7 +19,7 @@ export class AuthController {
       // Define the message pattern
       const pattern = { role: 'auth', cmd: 'register' };
       // send user registration data to the microservice
-      const response = await this.authService.sendMessage(pattern, createUserDto);
+      const response = await lastValueFrom(this.client.send(pattern, createUserDto));
       console.log(response);
       Logger.log(`User created: ${response.username}`, 'AuthController');
       return response;

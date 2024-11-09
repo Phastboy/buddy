@@ -1,5 +1,5 @@
 import { Controller, Inject, Logger } from '@nestjs/common';
-import { ClientProxy, EventPattern } from '@nestjs/microservices';
+import { ClientProxy, EventPattern, MessagePattern } from '@nestjs/microservices';
 import { CreateUserDto } from './users/dto/register.dto';
 import { UsersService } from './users/users.service';
 import { AuthService } from './auth.service';
@@ -11,23 +11,29 @@ export class AuthController {
         private authService: AuthService
     ) {}
 
-    @EventPattern({ role: 'auth', cmd: 'register' })
+    @MessagePattern({ role: 'auth', cmd: 'register' })
     async register(data: CreateUserDto) {
         Logger.log('Received registration request', 'AuthController');
         Logger.log(`Data: ${JSON.stringify(data)}`, 'AuthController');
 
         try {
-            const createdUser = (await this.userService.create(data)).toObject();
-            const { password, ...user } = createdUser;
+            const result = await this.userService.create(data);
 
-            const pattern = { role: 'auth', cmd: 'registered' };
-            await this.authService.emitEvent(pattern, user);
-
-            Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
-            Logger.log(`User created: ${user.username}`, 'AuthController');
+            if(result.success){
+                const { password, ...user } = result.data.toObject();
+                Logger.log(`User created: ${user.username}`, 'AuthController');
+                const pattern = { role: 'auth', cmd: 'registered' };
+                await this.authService.emitEvent(pattern, user);
+                Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
+                return {
+                    success: true,
+                    user
+                }
+            }
+            return { result }
         } catch (error) {
             Logger.error(`Failed to create user: ${data.username}. Error: ${error.message}`, error.stack, 'AuthController');
-            throw new Error(`Failed to create user: ${data.username}. Error: ${error.message}`);
+            return { status: 'error', message: error.message };
         }
     }
 

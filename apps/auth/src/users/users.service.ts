@@ -8,19 +8,28 @@ import { CreateUserDto } from './dto/register.dto';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async create(user: CreateUserDto): Promise<UserDocument> {
+  async create(user: CreateUserDto): Promise<{ success: boolean, data?: UserDocument, message?: string }> {
     Logger.log(`Creating user: ${user.username}`, 'UsersService');
     try {
-      return await this.userModel.create(user);
+      const createdUser = await this.userModel.create(user);
+      return {
+        success: true,
+        data: createdUser
+      };
     } catch (error: any) {
       if (error.code === 11000) { // MongoDB duplicate key error
         const duplicateKey = Object.keys(error.keyPattern)[0];
-        console.log(duplicateKey);
         Logger.warn(`Duplicate key error on: ${duplicateKey}`, 'UsersService');
-        throw new ConflictException(`A user with this ${duplicateKey} already exists.`);
+        return {
+          success: false,
+          message: `A user with this ${duplicateKey} already exists.` 
+        };
       } else {
         Logger.error(`Failed to create user: ${user.username}. Error: ${error.message}`, error.stack, 'UsersService');
-        throw new Error(`Failed to create user: ${user.username}. Error: ${error.message}`);
+        return {
+          success: false,
+          message: `Failed to create user: ${user.username}. Error: ${error.message}`
+        };
       }
     }
   }
