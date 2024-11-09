@@ -13,7 +13,7 @@ import { UsersController } from './users/users.controller';
         isGlobal: true,
       }
     ),
-    RmqModule.register('auth'),
+    RmqModule.register('auth', true),
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         uri: configService.getOrThrow('LOCAL_MONGODB_URI'),
