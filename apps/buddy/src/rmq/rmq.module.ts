@@ -1,32 +1,31 @@
 import { DynamicModule, Logger, Module } from '@nestjs/common';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigModule and ConfigService
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule], // Import ConfigModule so ConfigService is available
+  imports: [ConfigModule],
 })
 export class RmqModule {
-  static register(queueName: string): DynamicModule {
+  static register(queueName: string, isConsumer: boolean = true): DynamicModule {
     const clientToken = `RABBITMQ_${queueName.toUpperCase()}_CLIENT`;
 
     return {
       module: RmqModule,
-      imports: [ConfigModule], // Ensure ConfigModule is included in the imports array
+      imports: [ConfigModule],
       providers: [
         {
           provide: clientToken,
           useFactory: (configService: ConfigService) => {
-            const rabbitMqUrl = configService.get<string>('RABBITMQ_URL');
-            const queue = configService.get<string>(`RABBITMQ_${queueName.toUpperCase()}_QUEUE`);
+            const rabbitMqUrl = configService.get<string>('RABBITMQ_URL') || 'amqp://localhost:5672';
+            const queue = configService.get<string>(`RABBITMQ_${queueName.toUpperCase()}_QUEUE`) || queueName;
 
-            Logger.log(`RabbitMQ configuration for ${queueName}`);
-            Logger.log(`RabbitMQ dependency injection token: ${clientToken}`);
+            Logger.log(`Configuring RabbitMQ for queue: ${queueName}`);
             Logger.log(`RabbitMQ URL: ${rabbitMqUrl}`);
-            Logger.log(`RabbitMQ Queue: ${queue}`);
-
+            Logger.log(`Queue Name: ${queue}`);
+            Logger.log(`Consumer Mode: ${isConsumer}`);
 
             if (!rabbitMqUrl || !queue) {
-              throw new Error(`RabbitMQ configuration for ${queueName} is missing`);
+              throw new Error(`RabbitMQ configuration missing for ${queueName}`);
             }
 
             return ClientProxyFactory.create({
@@ -36,12 +35,12 @@ export class RmqModule {
                 queue,
                 queueOptions: {
                   durable: configService.get<boolean>('RABBITMQ_QUEUE_DURABLE', true),
-                  noAck: configService.get<boolean>('RABBITMQ_NO_ACK', false),
+                  noAck: !isConsumer,
                 },
               },
             });
           },
-          inject: [ConfigService], // Inject ConfigService
+          inject: [ConfigService],
         },
       ],
       exports: [clientToken],
