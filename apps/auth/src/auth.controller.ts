@@ -13,7 +13,7 @@ export class AuthController {
 
     @EventPattern({ role: 'auth', cmd: 'register' })
     async register(data: CreateUserDto) {
-        Logger.log('Received registration event', 'AuthController');
+        Logger.log('Received registration request', 'AuthController');
         Logger.log(`Data: ${JSON.stringify(data)}`, 'AuthController');
 
         try {

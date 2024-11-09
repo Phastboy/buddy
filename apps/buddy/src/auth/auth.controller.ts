@@ -15,15 +15,14 @@ export class AuthController {
     try {
       Logger.log('Received registration request', 'AuthController');
       
-      // Define the event pattern
+      // Define the message pattern
       const pattern = { role: 'auth', cmd: 'register' };
-      // Emit user registration event
-      await this.authService.emitEvent(pattern, createUserDto);
-      Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
-
-      // Respond to the client without waiting for event result
-      return { statusCode: 202, message: 'Registration request received. Processing...' };
-
+      // send user registration data to the microservice
+      const response = await this.authService.sendMessage(pattern, createUserDto);
+      console.log(response);
+      Logger.log(`User created: ${response.username}`, 'AuthController');
+      return response;
+      
     } catch (error) {
       Logger.error(`Registration error: ${error.message}`, error.stack, 'AuthController');
       return {
