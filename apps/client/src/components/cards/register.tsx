@@ -1,4 +1,26 @@
+import Form from 'next/form';
+
 export default async function Register() {
+    const registerUser = async (formData: FormData) => {
+        'use server';
+        const username = formData.get('username');
+        const email = formData.get('email');
+        const password = formData.get('password');
+    
+        const response = await fetch('http://localhost:3002/auth/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+            }),
+        });
+        console.log(await response.json())
+    }
+    
     return (
         <div className="flex items-center justify-center min-h-screen bg-[url('/vercel.svg')] bg-cover bg-no-repeat text-[#f9f9f9] relative">
             {/* Overlay */}
@@ -31,7 +53,7 @@ export default async function Register() {
 
                 {/* Registration Form - Right Side on large screens */}
                 <div className="md:w-1/2 mt-8 md:mt-0 md:pl-8 flex flex-col">
-                    <form className="grid w-full gap-6">
+                    <Form action={registerUser} className="grid w-full gap-6">
                         <div className="flex flex-col items-start">
                             <label htmlFor="username" className="text-[#ffffff]/[0.66] text-sm mb-1">
                                 Username:
@@ -80,7 +102,7 @@ export default async function Register() {
                         >
                             Register
                         </button>
-                    </form>
+                    </Form>
                 </div>
             </div>
         </div>
