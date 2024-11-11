@@ -3,12 +3,14 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { ResponseInterceptor } from './response/response.interceptor';
 
 const port = process.env.PORT || 3100;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new ResponseInterceptor)
 
   // Connect to RabbitMQ
   app.connectMicroservice<MicroserviceOptions>({
