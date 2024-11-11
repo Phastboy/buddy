@@ -1,9 +1,5 @@
-import { Controller, Inject, Logger } from '@nestjs/common';
-import {
-  ClientProxy,
-  EventPattern,
-  MessagePattern,
-} from '@nestjs/microservices';
+import { Controller, Logger, HttpStatus } from '@nestjs/common';
+import { MessagePattern, EventPattern } from '@nestjs/microservices';
 import { CreateUserDto } from './users/dto/register.dto';
 import { UsersService } from './users/users.service';
 import { AuthService } from './auth.service';
@@ -11,7 +7,6 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(
-    @Inject('RABBITMQ_AUTH_CLIENT') private client: ClientProxy,
     private userService: UsersService,
     private authService: AuthService,
   ) {}
@@ -22,30 +17,23 @@ export class AuthController {
     Logger.log(`Data: ${JSON.stringify(data)}`, 'AuthController');
 
     try {
-      const result = await this.userService.create(data);
+      const user = await this.userService.create(data);
+      const userObject = user.toObject();
+      Logger.log(`User created: ${userObject.username}`, 'AuthController');
 
-      if (result.success) {
-        const user = result.data.toObject();
-        Logger.log(`User created: ${user.username}`, 'AuthController');
-        const pattern = { role: 'auth', cmd: 'registered' };
-        await this.authService.emitEvent(pattern, user);
-        Logger.log(
-          `Event emitted for pattern: ${JSON.stringify(pattern)}`,
-          'AuthController',
-        );
-        return {
-          success: true,
-          user,
-        };
-      }
-      return { result };
+      const pattern = { role: 'auth', cmd: 'registered' };
+      await this.authService.emitEvent(pattern, userObject);
+      Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
+
+      return { status: HttpStatus.CREATED, message: 'User registered successfully', user: userObject };
     } catch (error) {
-      Logger.error(
-        `Failed to create user: ${data.username}. Error: ${error.message}`,
-        error.stack,
-        'AuthController',
-      );
-      return { status: 'error', message: error.message };
+      Logger.error(`Error: ${error.message}`, 'AuthController');
+      
+      return {
+        status: error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message || 'Registration failed',
+        details: error.response || 'Internal server error'
+      };
     }
   }
 
