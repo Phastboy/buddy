@@ -38,7 +38,7 @@ export class AuthController {
           user,
         };
       }
-      return { result };
+      return result;
     } catch (error) {
       Logger.error(
         `Failed to create user: ${data.username}. Error: ${error.message}`,
