@@ -22,7 +22,7 @@ export default async function Register() {
     }
     
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[url('/vercel.svg')] bg-cover bg-no-repeat text-[#f9f9f9] relative">
+        <div className="flex items-center justify-center min-h-screen bg-[url('/buddy.svg')] bg-cover bg-no-repeat text-[#f9f9f9] relative">
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/35"></div>
 

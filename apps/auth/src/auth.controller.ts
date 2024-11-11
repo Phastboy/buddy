@@ -1,5 +1,5 @@
 import { Controller, Logger, HttpStatus } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, EventPattern } from '@nestjs/microservices';
 import { CreateUserDto } from './users/dto/register.dto';
 import { UsersService } from './users/users.service';
 import { AuthService } from './auth.service';
@@ -29,12 +29,17 @@ export class AuthController {
     } catch (error) {
       Logger.error(`Error: ${error.message}`, 'AuthController');
       
-      // Explicitly return an error object
       return {
         status: error.status || HttpStatus.INTERNAL_SERVER_ERROR,
         message: error.message || 'Registration failed',
         details: error.response || 'Internal server error'
       };
     }
+  }
+
+  @EventPattern({ role: 'auth', cmd: 'registered' })
+  async registered(data: any) {
+    Logger.log('Received registered event', 'AuthController');
+    Logger.log(`Data: ${JSON.stringify(data)}`, 'AuthController');
   }
 }
