@@ -25,7 +25,7 @@ export class AuthController {
       await this.authService.emitEvent(pattern, userObject);
       Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
 
-      return { status: HttpStatus.CREATED, user: userObject };
+      return { status: HttpStatus.CREATED, message: 'User registered successfully', user: userObject };
     } catch (error) {
       Logger.error(`Error: ${error.message}`, 'AuthController');
       
