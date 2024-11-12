@@ -3,6 +3,7 @@ import { User, UserDocument } from './users.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/register.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +12,8 @@ export class UsersService {
   async create(user: CreateUserDto): Promise<UserDocument> {
     Logger.log(`Creating user: ${user.username}`, 'UsersService');
     try {
-      return await this.userModel.create(user);
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      return await this.userModel.create({ ...user, password: hashedPassword });
     } catch (error: any) {
       if (error.code === 11000) {
         const duplicateKey = Object.keys(error.keyPattern)[0];
