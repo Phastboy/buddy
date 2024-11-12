@@ -1,9 +1,12 @@
 import { ClientProxy } from '@nestjs/microservices';
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject('RABBITMQ_AUTH_CLIENT') private client: ClientProxy) {}
+  constructor(@Inject('RABBITMQ_AUTH_CLIENT') private client: ClientProxy,
+              private jwtService: JwtService
+  ) {}
 
   async emitEvent(pattern: any, data: any) {
     return new Promise((resolve, reject) => {
@@ -25,5 +28,11 @@ export class AuthService {
         },
       });
     });
+  }
+
+  async generateToken(payload: { username: string; sub: string }) {
+    return {
+      token: this.jwtService.sign(payload),
+    };
   }
 }
