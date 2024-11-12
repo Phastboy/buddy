@@ -19,13 +19,20 @@ export class AuthController {
     try {
       const user = await this.userService.create(data);
       const userObject = user.toObject();
-      Logger.log(`User created: ${userObject.username}`, 'AuthController');
+      if(user && userObject) {
+        const token = await this.authService.generateToken({
+          username: userObject.username,
+          email: userObject.email,
+          UserId: userObject._id
+        });
 
-      const pattern = { role: 'auth', cmd: 'registered' };
-      await this.authService.emitEvent(pattern, userObject);
-      Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
+        Logger.log(`User created: ${userObject.username}`, 'AuthController');
 
-      return { status: HttpStatus.CREATED, message: 'User registered successfully', user: userObject };
+        const pattern = { role: 'auth', cmd: 'registered' };
+        await this.authService.emitEvent(pattern, userObject);
+        Logger.log(`Event emitted for pattern: ${JSON.stringify(pattern)}`, 'AuthController');
+        return { status: HttpStatus.CREATED, message: 'User registered successfully', user: userObject, token };
+      }
     } catch (error) {
       Logger.error(`Error: ${error.message}`, 'AuthController');
       

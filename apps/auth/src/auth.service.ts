@@ -1,6 +1,7 @@
 import { ClientProxy } from '@nestjs/microservices';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ObjectId } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -30,9 +31,11 @@ export class AuthService {
     });
   }
 
-  async generateToken(payload: { username: string; sub: string }) {
-    return {
-      token: this.jwtService.sign(payload),
-    };
+  async generateToken(payload: {
+    username: string,
+    email: string,
+    UserId: any 
+  }): Promise<string> {
+    return this.jwtService.sign(payload);
   }
 }
