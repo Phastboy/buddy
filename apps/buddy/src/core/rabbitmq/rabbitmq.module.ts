@@ -14,6 +14,6 @@ import { QueueSetupService } from './queue-setup.service';
     }),
   ],
   providers: [QueueSetupService],
-  exports: [QueueSetupService],
+  exports: [QueueSetupService, RabbitMQModule],
 })
 export class RabbitmqCoreModule {}

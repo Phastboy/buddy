@@ -2,7 +2,7 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { RabbitmqCoreModule } from '../core/rabbitmq/rabbitmq.module';
-import { QueueSetupService } from '../core/rabbitmq/queue-setup.service'
+import { QueueSetupService } from '../core/rabbitmq/queue-setup.service';
 
 @Module({
   imports: [RabbitmqCoreModule],
