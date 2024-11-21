@@ -1,24 +1,32 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { ConfigModule } from '@nestjs/config';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { QueueSetupService } from './core/rabbitmq/queue-setup.service';
 import { AppService } from './app.service';
+import { AppController } from './app.controller';
+import { RabbitmqCoreModule } from './core/rabbitmq/rabbitmq.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    AuthModule,
-    MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.getOrThrow('LOCAL_MONGODB_URI'),
+    RabbitMQModule.forRootAsync(RabbitMQModule, {
+      useFactory: () => ({
+        uri: process.env.RABBITMQ_URI || 'amqp://localhost', // RabbitMQ connection URI
+        exchanges: [
+          {
+            name: 'auth_exchange',
+            type: 'topic',
+          },
+        ],
       }),
-      inject: [ConfigService],
     }),
+    AuthModule,
+    RabbitmqCoreModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [ AppController ],
+  providers: [ AppService ],
 })
 export class AppModule {}
