@@ -1,19 +1,25 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { RmqModule } from '../rmq/rmq.module';
-import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
+import { RabbitmqCoreModule } from '../core/rabbitmq/rabbitmq.module';
+import { QueueSetupService } from '../core/rabbitmq/queue-setup.service'
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    RmqModule.register('auth', false),
-    UsersModule,
-  ],
+  imports: [RabbitmqCoreModule],
   controllers: [AuthController],
   providers: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule implements OnModuleInit {
+  constructor(private readonly queueSetupService: QueueSetupService) {}
+
+  async onModuleInit() {
+    // Setup queues for auth-specific purposes
+    await this.queueSetupService.setupMultipleQueues([
+      {
+        queueName: 'auth_register_queue',
+        exchangeName: 'auth_exchange',
+        routingKey: 'auth.register',
+      },
+    ]);
+  }
+}

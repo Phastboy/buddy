@@ -36,4 +36,10 @@ export class QueueSetupService {
       throw error;
     }
   }
+
+  async setupMultipleQueues(queueConfigs: QueueSetupOptions[]): Promise<void> {
+    for (const config of queueConfigs) {
+      await this.setupQueue(config);
+    }
+  }
 }
