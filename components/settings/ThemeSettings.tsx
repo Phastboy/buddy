@@ -1,9 +1,32 @@
+import React, { useEffect, useState } from 'react';
 import useTheme from '@/hooks/useTheme';
 import ThemeOption from '../ThemeOption';
 import { View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const THEME_KEY = 'APP_THEME_PREFERENCE';
 
 export default function ThemeSettings() {
-  const { themePreference, updateThemePreference, colors } = useTheme();
+  const { updateThemePreference, colors, isThemeLoaded } = useTheme();
+  const [selectedPreference, setSelectedPreference] = useState<
+    'light' | 'dark' | 'system'
+  >('system');
+
+  useEffect(() => {
+    const loadPreference = async () => {
+      const stored = await AsyncStorage.getItem(THEME_KEY);
+      if (stored === 'light' || stored === 'dark' || stored === 'system') {
+        setSelectedPreference(stored);
+      }
+    };
+
+    if (isThemeLoaded) loadPreference();
+  }, [isThemeLoaded]);
+
+  const handleUpdate = (preference: 'light' | 'dark' | 'system') => {
+    setSelectedPreference(preference);
+    updateThemePreference(preference);
+  };
 
   return (
     <View style={[styles.container, { borderColor: colors.border }]}>
@@ -11,8 +34,8 @@ export default function ThemeSettings() {
         <ThemeOption
           title="Light"
           icon="sunny-outline"
-          onPress={() => updateThemePreference('light')}
-          isActive={themePreference === 'light'}
+          onPress={() => handleUpdate('light')}
+          isActive={selectedPreference === 'light'}
         />
       </View>
       <View style={[styles.divider, { backgroundColor: colors.border }]} />
@@ -20,8 +43,8 @@ export default function ThemeSettings() {
         <ThemeOption
           title="Dark"
           icon="moon-outline"
-          onPress={() => updateThemePreference('dark')}
-          isActive={themePreference === 'dark'}
+          onPress={() => handleUpdate('dark')}
+          isActive={selectedPreference === 'dark'}
         />
       </View>
       <View style={[styles.divider, { backgroundColor: colors.border }]} />
@@ -29,8 +52,8 @@ export default function ThemeSettings() {
         <ThemeOption
           title="System"
           icon="desktop-outline"
-          onPress={() => updateThemePreference('system')}
-          isActive={themePreference === 'system'}
+          onPress={() => handleUpdate('system')}
+          isActive={selectedPreference === 'system'}
         />
       </View>
     </View>

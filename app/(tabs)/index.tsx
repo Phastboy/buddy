@@ -2,7 +2,7 @@ import { View, Text, Button } from 'react-native';
 import useTheme from '@/hooks/useTheme';
 
 export default function Home() {
-  const { theme, colors, themePreference, updateThemePreference } = useTheme();
+  const { theme, colors, updateThemePreference } = useTheme();
 
   return (
     <View

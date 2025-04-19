@@ -9,14 +9,12 @@ const THEME_KEY = 'APP_THEME_PREFERENCE';
 
 interface IThemeContext {
   theme: EffectiveTheme;
-  themePreference: ThemePreference;
   updateThemePreference: (preference: ThemePreference) => void;
   isThemeLoaded: boolean;
 }
 
 export const ThemeContext = createContext<IThemeContext>({
   theme: 'dark',
-  themePreference: 'system',
   updateThemePreference: () => {},
   isThemeLoaded: false,
 });
@@ -29,10 +27,9 @@ export default function ThemeProvider({
   const systemColorScheme = useColorScheme();
   const [themePreference, setThemePreference] =
     useState<ThemePreference>('system');
-  const [currentTheme, setCurrentTheme] = useState<EffectiveTheme>('dark');
+  const [theme, setTheme] = useState<EffectiveTheme>('dark');
   const [isThemeLoaded, setIsThemeLoaded] = useState(false);
 
-  // Determine effective theme based on preference and system
   const getEffectiveTheme = (preference: ThemePreference): EffectiveTheme => {
     if (preference === 'system') {
       return systemColorScheme || 'dark';
@@ -40,52 +37,20 @@ export default function ThemeProvider({
     return preference;
   };
 
-  useEffect(() => {
-    const loadTheme = async () => {
-      try {
-        const savedPreference = await AsyncStorage.getItem(THEME_KEY);
-        let preference: ThemePreference = 'system';
-
-        if (
-          savedPreference === 'light' ||
-          savedPreference === 'dark' ||
-          savedPreference === 'system'
-        ) {
-          preference = savedPreference;
-        }
-
-        setThemePreference(preference);
-        setCurrentTheme(getEffectiveTheme(preference));
-        updateStatusBar(getEffectiveTheme(preference));
-      } catch (error) {
-        console.error('Failed to load theme', error);
-      } finally {
-        setIsThemeLoaded(true);
-      }
-    };
-
-    loadTheme();
-  }, []);
-
-  // Update theme when system color scheme changes (only if preference is 'system')
-  useEffect(() => {
-    if (themePreference === 'system') {
-      const effectiveTheme = getEffectiveTheme(themePreference);
-      setCurrentTheme(effectiveTheme);
-      updateStatusBar(effectiveTheme);
-    }
-  }, [systemColorScheme, themePreference]);
-
   const updateStatusBar = (theme: EffectiveTheme) => {
     setStatusBarStyle(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  const applyTheme = (preference: ThemePreference) => {
+    const effective = getEffectiveTheme(preference);
+    setTheme(effective);
+    updateStatusBar(effective);
   };
 
   const persistAndSetPreference = async (preference: ThemePreference) => {
     try {
       setThemePreference(preference);
-      const effectiveTheme = getEffectiveTheme(preference);
-      setCurrentTheme(effectiveTheme);
-      updateStatusBar(effectiveTheme);
+      applyTheme(preference);
       await AsyncStorage.setItem(THEME_KEY, preference);
     } catch (error) {
       console.error('Failed to save theme preference', error);
@@ -96,11 +61,37 @@ export default function ThemeProvider({
     persistAndSetPreference(preference);
   };
 
+  useEffect(() => {
+    const loadTheme = async () => {
+      try {
+        const saved = await AsyncStorage.getItem(THEME_KEY);
+        const preference: ThemePreference =
+          saved === 'light' || saved === 'dark' || saved === 'system'
+            ? saved
+            : 'system';
+
+        setThemePreference(preference);
+        applyTheme(preference);
+      } catch (error) {
+        console.error('Failed to load theme', error);
+      } finally {
+        setIsThemeLoaded(true);
+      }
+    };
+
+    loadTheme();
+  }, []);
+
+  useEffect(() => {
+    if (themePreference === 'system') {
+      applyTheme('system');
+    }
+  }, [systemColorScheme]);
+
   return (
     <ThemeContext.Provider
       value={{
-        theme: currentTheme,
-        themePreference,
+        theme,
         updateThemePreference,
         isThemeLoaded,
       }}
