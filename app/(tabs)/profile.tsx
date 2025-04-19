@@ -1,22 +1,83 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  ThemedScrollView,
+  ThemedText,
+  ThemedView,
+  ThemedCard,
+} from '@/components/Themed';
+import ThemeSettings from '@/components/settings/ThemeSettings';
+import useTheme from '@/hooks/useTheme';
+import { StyleSheet } from 'react-native';
 
 export default function Profile() {
+  const { colors } = useTheme();
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Profile</Text>
-    </View>
+    <ThemedScrollView contentContainerStyle={styles.content}>
+      <ThemedView style={styles.header}>
+        <ThemedText style={styles.title}>Profile</ThemedText>
+        <ThemedText style={styles.subtitle} secondary>
+          Customize your app experience
+        </ThemedText>
+      </ThemedView>
+
+      <ThemedText style={styles.sectionLabel}>Appearance</ThemedText>
+      <ThemeSettings />
+
+      <ThemedText style={styles.sectionLabel}>Theme Preview</ThemedText>
+      <ThemedCard style={styles.previewCard}>
+        <ThemedText style={styles.previewText}>Sample Text</ThemedText>
+        <ThemedView style={styles.primaryButton}>
+          <ThemedText color={colors.text}>Primary Button</ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.secondaryButton}>
+          <ThemedText color={colors.text}>Secondary Button</ThemedText>
+        </ThemedView>
+      </ThemedCard>
+    </ThemedScrollView>
   );
 }
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  content: {
+    padding: 20,
+  },
+  header: {
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  sectionLabel: {
+    fontSize: 13,
+    fontWeight: '500',
+    letterSpacing: 0.5,
+    marginBottom: 12,
+    marginTop: 24,
+    textTransform: 'uppercase',
+    opacity: 0.6,
+  },
+  previewCard: {
+    marginBottom: 24,
+  },
+  previewText: {
+    marginBottom: 12,
+  },
+  primaryButton: {
+    height: 40,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000000',
+    marginBottom: 12,
   },
-  text: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
+  secondaryButton: {
+    height: 40,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
