@@ -1,21 +1,57 @@
-import { View, Text, Button } from 'react-native';
-import useTheme from '@/hooks/useTheme';
+import { EventCard, PostCard } from '@/components/cards';
+import { ThemedScrollView } from '@/components/Themed';
+import {
+  getEnhancedPosts,
+  getEnhancedEvents,
+  findUser,
+  findPost,
+} from '@/utils/data';
 
-export default function Home() {
-  const { theme, colors, updateThemePreference } = useTheme();
+export default function HomeScreen() {
+  const posts = getEnhancedPosts();
+  const events = getEnhancedEvents();
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colors.background,
-      }}
-    >
-      <Text style={{ color: colors.text, fontSize: 18 }}>
-        Current Theme: {theme}
-      </Text>
-    </View>
+    <ThemedScrollView>
+      {/* Render events */}
+      {events.map((event) => (
+        <EventCard
+          key={event.id}
+          event={event}
+          occurrence={event.occurrences?.[0]}
+          user={
+            event.userId
+              ? (userId) => {
+                  const user = findUser(userId);
+                  if (!user)
+                    throw new Error(`User not found for ID: ${userId}`);
+                  return user;
+                }
+              : undefined
+          }
+          rsvpCount={event.rsvps?.length}
+        />
+      ))}
+
+      {/* Render posts */}
+      {posts.map((post) => (
+        <PostCard
+          key={post.id}
+          post={post}
+          user={
+            post.userId
+              ? (userId) => {
+                  const user = findUser(userId);
+                  if (!user)
+                    throw new Error(`User not found for ID: ${userId}`);
+                  return user;
+                }
+              : undefined
+          }
+          likeCount={post.likes?.length}
+          commentCount={post.comments?.length}
+        />
+      ))}
+    </ThemedScrollView>
   );
 }
