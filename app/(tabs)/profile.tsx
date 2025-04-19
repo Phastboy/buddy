@@ -5,9 +5,11 @@ import {
   ThemedCard,
 } from '@/components/Themed';
 import ThemeSettings from '@/components/settings/ThemeSettings';
+import useTheme from '@/hooks/useTheme';
 import { StyleSheet } from 'react-native';
 
 export default function Profile() {
+  const { colors } = useTheme();
   return (
     <ThemedScrollView contentContainerStyle={styles.content}>
       <ThemedView style={styles.header}>
@@ -24,10 +26,10 @@ export default function Profile() {
       <ThemedCard style={styles.previewCard}>
         <ThemedText style={styles.previewText}>Sample Text</ThemedText>
         <ThemedView style={styles.primaryButton}>
-          <ThemedText color="#FFF">Primary Button</ThemedText>
+          <ThemedText color={colors.text}>Primary Button</ThemedText>
         </ThemedView>
         <ThemedView style={styles.secondaryButton}>
-          <ThemedText color="#FFF">Secondary Button</ThemedText>
+          <ThemedText color={colors.text}>Secondary Button</ThemedText>
         </ThemedView>
       </ThemedCard>
     </ThemedScrollView>
