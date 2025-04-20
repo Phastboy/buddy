@@ -1,7 +1,11 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setStatusBarStyle } from 'expo-status-bar';
+import {
+  setStatusBarStyle,
+  setStatusBarBackgroundColor,
+} from 'expo-status-bar';
+import { ThemeColors, themes } from '@/theme';
 
 type ThemePreference = 'light' | 'dark' | 'system';
 type EffectiveTheme = 'light' | 'dark';
@@ -12,6 +16,7 @@ interface IThemeContext {
   themePreference: ThemePreference;
   updateThemePreference: (preference: ThemePreference) => void;
   isThemeLoaded: boolean;
+  colors: ThemeColors;
 }
 
 export const ThemeContext = createContext<IThemeContext>({
@@ -19,6 +24,7 @@ export const ThemeContext = createContext<IThemeContext>({
   themePreference: 'system',
   updateThemePreference: () => {},
   isThemeLoaded: false,
+  colors: themes['dark'],
 });
 
 export default function ThemeProvider({
@@ -42,6 +48,9 @@ export default function ThemeProvider({
   );
 
   const updateStatusBar = useCallback((theme: EffectiveTheme) => {
+    setStatusBarBackgroundColor(
+      theme === 'dark' ? themes.dark.background : themes.light.background,
+    );
     setStatusBarStyle(theme === 'dark' ? 'light' : 'dark');
   }, []);
 
@@ -113,6 +122,7 @@ export default function ThemeProvider({
         themePreference,
         updateThemePreference,
         isThemeLoaded,
+        colors: themes[theme],
       }}
     >
       {children}

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import useTheme from '@/hooks/useTheme';
-import ThemeOption from '../ThemeOption';
 import { View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ThemeOption from './ThemeOption';
 
 const THEME_KEY = 'APP_THEME_PREFERENCE';
 
@@ -30,7 +30,9 @@ export default function ThemeSettings() {
 
   return (
     <View style={[styles.container, { borderColor: colors.border }]}>
-      <View style={[styles.optionContainer, { backgroundColor: colors.card }]}>
+      <View
+        style={[styles.optionContainer, { backgroundColor: colors.background }]}
+      >
         <ThemeOption
           title="Light"
           icon="sunny-outline"
@@ -39,7 +41,9 @@ export default function ThemeSettings() {
         />
       </View>
       <View style={[styles.divider, { backgroundColor: colors.border }]} />
-      <View style={[styles.optionContainer, { backgroundColor: colors.card }]}>
+      <View
+        style={[styles.optionContainer, { backgroundColor: colors.background }]}
+      >
         <ThemeOption
           title="Dark"
           icon="moon-outline"
@@ -48,7 +52,9 @@ export default function ThemeSettings() {
         />
       </View>
       <View style={[styles.divider, { backgroundColor: colors.border }]} />
-      <View style={[styles.optionContainer, { backgroundColor: colors.card }]}>
+      <View
+        style={[styles.optionContainer, { backgroundColor: colors.background }]}
+      >
         <ThemeOption
           title="System"
           icon="desktop-outline"

@@ -25,7 +25,7 @@ export default function ThemeOption({
       style={[
         styles.button,
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.background,
           borderColor: colors.border,
           ...Platform.select({
             ios: {
@@ -41,13 +41,13 @@ export default function ThemeOption({
         },
       ]}
     >
-      <Ionicons name={icon} size={20} color={colors.text} />
-      <Text style={[styles.text, { color: colors.text }]}>
+      <Ionicons name={icon} size={20} color={colors.color} />
+      <Text style={[styles.text, { color: colors.color }]}>
         {title.toLowerCase()}
       </Text>
       <Ionicons
         name={isActive ? 'checkmark-circle' : 'ellipse-outline'}
-        color={isActive ? colors.primary : colors.text}
+        color={isActive ? colors.primary : colors.color}
         size={20}
       />
     </TouchableOpacity>
