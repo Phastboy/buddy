@@ -1,24 +1,16 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import useTheme from '@/hooks/useTheme';
-import ThemeToggle from '@/components/ThemeToggle';
 export default function TabsLayout() {
   const { colors } = useTheme();
 
   return (
     <Tabs
       screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.background,
-        },
-        headerTitleStyle: {
-          color: colors.text,
-        },
+        headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.background,
         },
-        tabBarActiveTintColor: colors.primary,
-        headerRight: () => <ThemeToggle />,
       }}
     >
       <Tabs.Screen
