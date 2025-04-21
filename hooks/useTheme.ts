@@ -1,4 +1,4 @@
-import { ThemeContext } from '@/components/ThemeContext';
+import { ThemeContext } from '@/components/theme/ThemeContext';
 import { useContext } from 'react';
 
 export default function useTheme() {
@@ -8,19 +8,8 @@ export default function useTheme() {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
 
-  const {
-    colors,
-    theme,
-    themePreference,
-    updateThemePreference,
-    isThemeLoaded,
-  } = context;
-
   return {
-    colors,
-    theme,
-    themePreference,
-    updateThemePreference,
-    isThemeLoaded,
+    ...context.colors,
+    ...context,
   };
 }
