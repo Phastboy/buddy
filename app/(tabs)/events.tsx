@@ -1,23 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import ThemedText from '@/components/ui/ThemedText';
+import ThemedView from '@/components/ui/ThemedView';
 
 export default function Events() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Events</Text>
-    </View>
+    <ThemedView>
+      <ThemedText>Events Screen</ThemedText>
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000000',
-  },
-  text: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});

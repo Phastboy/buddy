@@ -9,6 +9,8 @@ const ThemedScrollView = React.forwardRef<ScrollView, ScrollViewProps>(
         flex: 1,
         backgroundColor: theme.background,
         color: theme.color,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
     }));
 

@@ -9,6 +9,8 @@ const ThemedView = React.forwardRef<View, ViewProps>(
         flex: 1,
         backgroundColor: theme.background,
         color: theme.color,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
     }));
 
