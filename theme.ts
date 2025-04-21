@@ -1,3 +1,5 @@
+import { ColorValue } from 'react-native';
+
 export type Themes = {
   light: ThemeColors;
   dark: ThemeColors;
@@ -5,39 +7,39 @@ export type Themes = {
 
 export type ThemeColors = {
   // Core
-  background: string;
-  color: string;
+  background: ColorValue;
+  color: ColorValue;
 
   // Primary palette
-  primary: string;
-  primaryContrast: string;
-  primaryHighlight: string;
+  primary: ColorValue;
+  primaryContrast: ColorValue;
+  primaryHighlight: ColorValue;
 
   // Secondary palette
-  secondary: string;
-  secondaryContrast: string;
-  secondaryHighlight: string;
+  secondary: ColorValue;
+  secondaryContrast: ColorValue;
+  secondaryHighlight: ColorValue;
 
   // States
-  checked: string;
-  disabled: string;
-  disabledText: string;
-  hover: string;
+  checked: ColorValue;
+  disabled: ColorValue;
+  disabledText: ColorValue;
+  hover: ColorValue;
 
   // Feedback
-  error: string;
-  errorContrast: string;
-  success: string;
-  successContrast: string;
-  warning: string;
-  warningContrast: string;
-  info: string;
-  infoContrast: string;
+  error: ColorValue;
+  errorContrast: ColorValue;
+  success: ColorValue;
+  successContrast: ColorValue;
+  warning: ColorValue;
+  warningContrast: ColorValue;
+  info: ColorValue;
+  infoContrast: ColorValue;
 
   // Neutrals
-  muted: string;
-  border: string;
-  shadow: string;
+  muted: ColorValue;
+  border: ColorValue;
+  shadow: ColorValue;
 };
 
 export const themes: Themes = {
