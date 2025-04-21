@@ -10,6 +10,5 @@ export default function useTheme() {
 
   return {
     ...context.colors,
-    ...context,
   };
 }
