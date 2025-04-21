@@ -8,8 +8,10 @@ export default function useTheme() {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
 
+  const { colors, ...rest } = context;
+
   return {
-    ...context.colors,
-    ...context,
+    colors,
+    ...rest,
   };
 }

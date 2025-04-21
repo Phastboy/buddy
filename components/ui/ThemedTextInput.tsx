@@ -1,20 +1,21 @@
 import React from 'react';
-import { TextInput, TextInputProps } from 'react-native';
-import useStyles from '@/utils/useStyles';
+import { StyleSheet, TextInput, TextInputProps } from 'react-native';
+import useTheme from '@/utils/useTheme';
 
 export default function ThemedTextInput({ style, ...props }: TextInputProps) {
-  const styles = useStyles((theme) => ({
+  const { colors } = useTheme();
+  const styles = StyleSheet.create({
     input: {
-      color: theme.color,
-      backgroundColor: theme.background,
-      borderColor: theme.border,
+      color: colors.color,
+      backgroundColor: colors.background,
+      borderColor: colors.border,
       padding: 12,
       borderRadius: 8,
     },
     placeholderText: {
-      color: theme.muted,
+      color: colors.muted,
     },
-  }));
+  });
 
   return (
     <TextInput

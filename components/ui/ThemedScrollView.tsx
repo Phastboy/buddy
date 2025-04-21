@@ -1,15 +1,16 @@
 import React from 'react';
-import { ScrollView, ScrollViewProps } from 'react-native';
-import useStyles from '@/utils/useStyles';
+import { ScrollView, ScrollViewProps, StyleSheet } from 'react-native';
+import useTheme from '@/utils/useTheme';
 
 const ThemedScrollView = React.forwardRef<ScrollView, ScrollViewProps>(
   ({ style, ...props }, ref) => {
-    const styles = useStyles((theme) => ({
+    const { colors } = useTheme();
+    const styles = StyleSheet.create({
       container: {
-        backgroundColor: theme.background,
-        color: theme.color,
+        backgroundColor: colors.background,
+        color: colors.color,
       },
-    }));
+    });
 
     return (
       <ScrollView ref={ref} style={[styles.container, style]} {...props} />

@@ -1,13 +1,34 @@
 import React from 'react';
-import { Text, TextProps } from 'react-native';
-import useStyles from '@/utils/useStyles';
+import { StyleSheet, Text, TextProps } from 'react-native';
+import useTheme from '@/utils/useTheme';
 
-export default function ThemedText({ style, ...props }: TextProps) {
-  const styles = useStyles((theme) => ({
-    text: {
-      color: theme.color,
-    },
-  }));
+type TextVariant = 'title' | 'subtitle' | 'body' | 'caption' | 'info';
 
-  return <Text style={[styles.text, style]} {...props} />;
+interface ThemedTextProps extends TextProps {
+  variant?: TextVariant;
 }
+
+const ThemedText = React.forwardRef<Text, ThemedTextProps>(
+  ({ style, variant = 'body', ...props }, ref) => {
+    const { colors } = useTheme();
+    const fontSizeMap: Record<TextVariant, number> = {
+      title: 24,
+      subtitle: 18,
+      body: 14,
+      caption: 12,
+      info: 12,
+    };
+    const styles = StyleSheet.create({
+      text: {
+        fontSize: fontSizeMap[variant],
+        fontWeight: variant === 'title' ? 'bold' : 'normal',
+        color: colors.color,
+      },
+    });
+
+    return <Text ref={ref} style={[styles.text, style]} {...props} />;
+  },
+);
+
+ThemedText.displayName = 'ThemedText';
+export default ThemedText;

@@ -1,15 +1,16 @@
+import useTheme from '@/utils/useTheme';
 import React from 'react';
-import { View, ViewProps } from 'react-native';
-import useStyles from '@/utils/useStyles';
+import { StyleSheet, View, ViewProps } from 'react-native';
 
 const ThemedView = React.forwardRef<View, ViewProps>(
   ({ style, ...props }, ref) => {
-    const styles = useStyles((theme) => ({
+    const { colors } = useTheme();
+    const styles = StyleSheet.create({
       container: {
-        backgroundColor: theme.background,
-        color: theme.color,
+        backgroundColor: colors.background,
+        color: colors.color,
       },
-    }));
+    });
 
     return <View ref={ref} style={[styles.container, style]} {...props} />;
   },

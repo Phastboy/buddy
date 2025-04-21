@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ThemeOption from './ThemeOption';
-import useStyles from '@/utils/useStyles';
 import ThemedView from '../ui/ThemedView';
 import useTheme from '@/utils/useTheme';
+import { StyleSheet } from 'react-native';
 
 const THEME_KEY = 'APP_THEME_PREFERENCE';
 
 export default function ThemeSettings() {
+  const { colors } = useTheme();
   const { updateThemePreference, isThemeLoaded } = useTheme();
 
   const [selectedPreference, setSelectedPreference] = useState<
     'light' | 'dark' | 'system'
   >('system');
 
-  const styles = useStyles((theme) => ({
+  const styles = StyleSheet.create({
     container: {
       borderRadius: 16,
       borderWidth: 1,
-      borderColor: theme.border,
+      borderColor: colors.border,
       maxHeight: 250,
     },
-  }));
+  });
 
   useEffect(() => {
     const loadPreference = async () => {

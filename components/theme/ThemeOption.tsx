@@ -17,7 +17,7 @@ export default function ThemeOption({
   onPress,
   isActive,
 }: IThemeOption) {
-  const theme = useTheme();
+  const { colors } = useTheme();
 
   return (
     <TouchableOpacity
@@ -26,11 +26,11 @@ export default function ThemeOption({
       style={[
         styles.button,
         {
-          backgroundColor: theme.background,
-          borderColor: theme.border,
+          backgroundColor: colors.background,
+          borderColor: colors.border,
           ...Platform.select({
             ios: {
-              shadow: theme.shadow,
+              shadow: colors.shadow,
             },
             android: {
               elevation: 2,
@@ -39,13 +39,13 @@ export default function ThemeOption({
         },
       ]}
     >
-      <Ionicons name={icon} size={20} color={theme.color} />
-      <ThemedText style={[styles.text, { color: theme.color }]}>
+      <Ionicons name={icon} size={20} color={colors.color} />
+      <ThemedText style={[styles.text, { color: colors.color }]}>
         {title.toLowerCase()}
       </ThemedText>
       <Ionicons
         name={isActive ? 'checkmark-circle' : 'ellipse-outline'}
-        color={isActive ? theme.primary : theme.color}
+        color={isActive ? colors.primary : colors.color}
         size={20}
       />
     </TouchableOpacity>

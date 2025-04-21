@@ -4,7 +4,7 @@ import ThemedView from '@/components/ui/ThemedView';
 export default function Events() {
   return (
     <ThemedView>
-      <ThemedText>Events Screen</ThemedText>
+      <ThemedText variant="title">Events Screen</ThemedText>
     </ThemedView>
   );
 }
