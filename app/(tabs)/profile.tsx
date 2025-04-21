@@ -4,7 +4,7 @@ import ThemedView from '@/components/ui/ThemedView';
 
 export default function ProfileScreen() {
   return (
-    <ThemedView>
+    <ThemedView style={{ flex: 1 }}>
       <ThemedText>Profile Screen</ThemedText>
       <ThemeSettings />
     </ThemedView>
