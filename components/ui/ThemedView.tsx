@@ -6,11 +6,8 @@ const ThemedView = React.forwardRef<View, ViewProps>(
   ({ style, ...props }, ref) => {
     const styles = useStyles((theme) => ({
       container: {
-        flex: 1,
         backgroundColor: theme.background,
         color: theme.color,
-        justifyContent: 'center',
-        alignItems: 'center',
       },
     }));
 
