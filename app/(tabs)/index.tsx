@@ -8,11 +8,11 @@ export default function TimelineScreen() {
   return (
     <ThemedView style={{ flex: 1 }}>
       <ThemedView>
-        <ThemedText variant="title">New Text</ThemedText>
+        <ThemedText>New Text</ThemedText>
       </ThemedView>
-      <ThemedText variant="body">Timeline Screen</ThemedText>
+      <ThemedText>Timeline Screen</ThemedText>
       <AnimatedThemedView>
-        <ThemedText variant="caption">Animated Themed View</ThemedText>
+        <ThemedText>Animated Themed View</ThemedText>
       </AnimatedThemedView>
     </ThemedView>
   );
