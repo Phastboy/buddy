@@ -27,6 +27,19 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="search"
+        options={{
+          title: 'Search',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? 'search-sharp' : 'search-outline'}
+              size={24}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="events"
         options={{
           title: 'Events',
@@ -40,25 +53,12 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="notifications"
+        name="chat"
         options={{
-          title: 'Notifications',
+          title: 'Chat',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? 'notifications-sharp' : 'notifications-outline'}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? 'person-circle-sharp' : 'person-circle-outline'}
+              name={focused ? 'chatbubble-sharp' : 'chatbubble-outline'}
               size={24}
               color={color}
             />

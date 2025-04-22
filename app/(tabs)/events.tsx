@@ -24,9 +24,15 @@ const App = () => {
         scrollY={scrollY}
         showBackButton
         isScrollingUp={isScrollingUp}
-        height={headerHeight}
+        height={40}
       >
-        <ThemedText style={styles.headerText}>My Header</ThemedText>
+        <ThemedView style={{ flex: 1, alignItems: 'center' }}>
+          <ThemedText
+            style={{ fontSize: 18, fontWeight: 'bold', color: colors.color }}
+          >
+            Events
+          </ThemedText>
+        </ThemedView>
       </ScrollAwareHeader>
 
       <AnimatedThemedScrollView

@@ -12,7 +12,6 @@ import {
 import AnimatedThemedView from '../ui/AnimatedView';
 import useTheme from '@/utils/useTheme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Back from '../Back';
 import { useRouter } from 'expo-router';
 
 type ScrollAwareHeaderProps = {
@@ -23,7 +22,6 @@ type ScrollAwareHeaderProps = {
   fadeDistance?: number;
   containerStyle?: StyleProps;
   showBackButton?: boolean;
-  contentContainerStyle?: StyleProps;
   childrenContainerStyle?: StyleProps;
 };
 
@@ -34,13 +32,13 @@ const ScrollAwareHeader = ({
   height = 90,
   fadeDistance = 50,
   containerStyle = {},
-  contentContainerStyle = {},
   childrenContainerStyle = {},
   showBackButton,
 }: ScrollAwareHeaderProps) => {
   const { top } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const { colors } = useTheme();
+  const router = useRouter();
 
   const springConfig = React.useMemo(
     () => ({
@@ -98,14 +96,17 @@ const ScrollAwareHeader = ({
       ]}
     >
       <AnimatedThemedView
-        style={[styles.contentContainer, contentContainerStyle]}
+        style={[styles.childrenContainer, childrenContainerStyle]}
       >
-        {showBackButton && <Back color={colors.color} />}
-        <AnimatedThemedView
-          style={[styles.childrenContainer, childrenContainerStyle]}
-        >
-          {children}
-        </AnimatedThemedView>
+        {showBackButton && (
+          <Ionicons
+            name="arrow-back"
+            size={24}
+            color={colors.color}
+            onPress={() => router.back()}
+          />
+        )}
+        {children}
       </AnimatedThemedView>
     </AnimatedThemedView>
   );
@@ -118,20 +119,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 100,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: '100%',
-    paddingHorizontal: 16,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 6,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   childrenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
   },
 });
 

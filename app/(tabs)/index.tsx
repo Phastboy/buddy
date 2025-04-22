@@ -14,13 +14,17 @@ const App = () => {
     headerHeight,
     scrollHandler,
     scrollContentPaddingTop,
-  } = scroll();
+  } = scroll(40);
 
   const { colors } = useTheme();
 
   return (
     <ThemedView style={styles.container}>
-      <TimelineHeader scrollY={scrollY} isScrollingUp={isScrollingUp} />
+      <TimelineHeader
+        scrollY={scrollY}
+        isScrollingUp={isScrollingUp}
+        headerHeight={headerHeight}
+      />
 
       <AnimatedThemedScrollView
         contentContainerStyle={{ paddingTop: scrollContentPaddingTop }}
