@@ -39,7 +39,6 @@ export type ThemeColors = {
   // Neutrals
   muted: ColorValue;
   border: ColorValue;
-  shadow: ColorValue;
 };
 
 export const themes: Themes = {
@@ -71,7 +70,6 @@ export const themes: Themes = {
 
     muted: '#6B7280',
     border: '#E5E7EB',
-    shadow: 'rgba(0,0,0,0.1)',
   },
 
   dark: {
@@ -102,6 +100,15 @@ export const themes: Themes = {
 
     muted: '#9CA3AF',
     border: '#4B5563',
-    shadow: 'rgba(0,0,0,0.4)',
   },
+};
+
+export const withAlpha = (hexColor: string, opacity: number): ColorValue => {
+  const hex = hexColor.replace('#', '');
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };

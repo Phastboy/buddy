@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import useTheme from '@/utils/useTheme';
 import ThemedText from '../ui/ThemedText';
+import { withAlpha } from '@/theme';
 
 interface IThemeOption {
   title: string;
@@ -30,7 +31,7 @@ export default function ThemeOption({
           borderColor: colors.border,
           ...Platform.select({
             ios: {
-              shadow: colors.shadow,
+              shadow: withAlpha(colors.primary.toString(), 0.1),
             },
             android: {
               elevation: 2,

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, useWindowDimensions, ViewStyle } from 'react-native';
+import { StyleSheet, useWindowDimensions, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import {
   useAnimatedStyle,
   interpolate,
@@ -12,6 +13,7 @@ import AnimatedThemedView from './ui/AnimatedView';
 import useTheme from '@/utils/useTheme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Back from './Back';
+import { useRouter } from 'expo-router';
 
 type ScrollAwareHeaderProps = {
   children: ReactNode;
@@ -106,6 +108,57 @@ const ScrollAwareHeader = ({
         </AnimatedThemedView>
       </AnimatedThemedView>
     </AnimatedThemedView>
+  );
+};
+
+export const TimelineHeader = ({
+  scrollY,
+  isScrollingUp,
+}: {
+  scrollY: SharedValue<number>;
+  isScrollingUp: SharedValue<boolean>;
+}) => {
+  const router = useRouter();
+  const { colors } = useTheme();
+  const handleUserIconPress = () => {
+    // Handle user icon press
+  };
+
+  const handleNotificationIconPress = () => {
+    router.push('/notifications');
+  };
+
+  return (
+    <ScrollAwareHeader
+      scrollY={scrollY}
+      isScrollingUp={isScrollingUp}
+      height={90}
+      fadeDistance={50}
+      contentContainerStyle={{ justifyContent: 'space-between' }}
+    >
+      {/* User Icon */}
+      <Ionicons
+        name="person-circle-outline"
+        size={24}
+        color={colors.color}
+        onPress={handleUserIconPress}
+      />
+
+      {/* Title */}
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.color }}>
+          Timeline
+        </Text>
+      </View>
+
+      {/* Notification Icon */}
+      <Ionicons
+        name="notifications-outline"
+        size={24}
+        color={colors.color}
+        onPress={handleNotificationIconPress}
+      />
+    </ScrollAwareHeader>
   );
 };
 

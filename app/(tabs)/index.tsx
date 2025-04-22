@@ -1,4 +1,4 @@
-import ScrollAwareHeader from '@/components/Header';
+import ScrollAwareHeader, { TimelineHeader } from '@/components/Header';
 import AnimatedThemedScrollView from '@/components/ui/AnimatedScrollView';
 import ThemedText from '@/components/ui/ThemedText';
 import ThemedView from '@/components/ui/ThemedView';
@@ -20,14 +20,7 @@ const App = () => {
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollAwareHeader
-        scrollY={scrollY}
-        isScrollingUp={isScrollingUp}
-        height={headerHeight}
-        style={{ backgroundColor: colors.background }}
-      >
-        <ThemedText style={styles.headerText}>My Header</ThemedText>
-      </ScrollAwareHeader>
+      <TimelineHeader scrollY={scrollY} isScrollingUp={isScrollingUp} />
 
       <AnimatedThemedScrollView
         contentContainerStyle={{ paddingTop: scrollContentPaddingTop }}

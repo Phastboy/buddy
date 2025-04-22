@@ -25,7 +25,6 @@ const App = () => {
         showBackButton
         isScrollingUp={isScrollingUp}
         height={headerHeight}
-        style={{ backgroundColor: colors.background }}
       >
         <ThemedText style={styles.headerText}>My Header</ThemedText>
       </ScrollAwareHeader>
