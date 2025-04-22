@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
+import { StyleSheet, useWindowDimensions, ViewStyle } from 'react-native';
 import {
   useAnimatedStyle,
   interpolate,
@@ -10,6 +10,7 @@ import {
 import AnimatedThemedView from './ui/AnimatedView';
 import useTheme from '@/utils/useTheme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Back from './Back';
 
 type ScrollAwareHeaderProps = {
   children: ReactNode;
@@ -17,7 +18,8 @@ type ScrollAwareHeaderProps = {
   isScrollingUp: SharedValue<boolean>;
   height?: number;
   fadeDistance?: number;
-  style?: object;
+  style?: ViewStyle;
+  showBackButton?: boolean;
 };
 
 const ScrollAwareHeader = ({
@@ -27,12 +29,21 @@ const ScrollAwareHeader = ({
   height = 90,
   fadeDistance = 50,
   style = {},
+  showBackButton,
 }: ScrollAwareHeaderProps) => {
   const { top } = useSafeAreaInsets();
-  const { height: screenHeight } = useWindowDimensions();
-  const springConfig = { damping: 20, stiffness: 150 };
+  const { width } = useWindowDimensions();
+  const { colors } = useTheme();
+
+  const springConfig = React.useMemo(
+    () => ({
+      damping: 20,
+      stiffness: 150,
+    }),
+    [],
+  );
+
   const headerStyle = useAnimatedStyle(() => {
-    // Always show if at top or when overscrolling (negative values)
     if (scrollY.value <= 0) {
       return {
         opacity: 1,
@@ -40,7 +51,6 @@ const ScrollAwareHeader = ({
       };
     }
 
-    // Show when scrolling up
     if (isScrollingUp.value) {
       return {
         opacity: withSpring(1, springConfig),
@@ -48,7 +58,6 @@ const ScrollAwareHeader = ({
       };
     }
 
-    // Hide when scrolling down
     const progress = interpolate(
       scrollY.value,
       [0, fadeDistance],
@@ -66,21 +75,27 @@ const ScrollAwareHeader = ({
     };
   });
 
-  const { colors } = useTheme();
-
   return (
     <AnimatedThemedView
       style={[
         styles.header,
-        { height },
-        { paddingTop: top },
-        { backgroundColor: colors.background },
+        {
+          height: height + top,
+          paddingTop: top,
+          backgroundColor: colors.background,
+          borderBottomColor: colors.border,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+        },
         headerStyle,
         style,
-        { borderBottomColor: colors.muted },
       ]}
     >
-      {children}
+      <AnimatedThemedView style={styles.contentContainer}>
+        {showBackButton && <Back color={colors.color} />}
+        <AnimatedThemedView style={[styles.childrenContainer, ,]}>
+          {children}
+        </AnimatedThemedView>
+      </AnimatedThemedView>
     </AnimatedThemedView>
   );
 };
@@ -92,9 +107,20 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 100,
-    justifyContent: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  contentContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
+    height: '100%',
+    paddingHorizontal: 16,
+  },
+  childrenContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
