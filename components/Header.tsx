@@ -6,6 +6,7 @@ import {
   withSpring,
   Extrapolation,
   SharedValue,
+  StyleProps,
 } from 'react-native-reanimated';
 import AnimatedThemedView from './ui/AnimatedView';
 import useTheme from '@/utils/useTheme';
@@ -18,8 +19,10 @@ type ScrollAwareHeaderProps = {
   isScrollingUp: SharedValue<boolean>;
   height?: number;
   fadeDistance?: number;
-  style?: ViewStyle;
+  style?: StyleProps;
   showBackButton?: boolean;
+  contentContainerStyle?: StyleProps;
+  childrenContainerStyle?: StyleProps;
 };
 
 const ScrollAwareHeader = ({
@@ -29,6 +32,8 @@ const ScrollAwareHeader = ({
   height = 90,
   fadeDistance = 50,
   style = {},
+  contentContainerStyle = {},
+  childrenContainerStyle = {},
   showBackButton,
 }: ScrollAwareHeaderProps) => {
   const { top } = useSafeAreaInsets();
@@ -90,9 +95,13 @@ const ScrollAwareHeader = ({
         style,
       ]}
     >
-      <AnimatedThemedView style={styles.contentContainer}>
+      <AnimatedThemedView
+        style={[styles.contentContainer, contentContainerStyle]}
+      >
         {showBackButton && <Back color={colors.color} />}
-        <AnimatedThemedView style={[styles.childrenContainer, { width }]}>
+        <AnimatedThemedView
+          style={[styles.childrenContainer, childrenContainerStyle]}
+        >
           {children}
         </AnimatedThemedView>
       </AnimatedThemedView>
