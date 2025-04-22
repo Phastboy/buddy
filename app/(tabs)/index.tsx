@@ -8,7 +8,13 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 const App = () => {
-  const { scrollY, isScrollingUp, headerHeight, scrollHandler } = scroll();
+  const {
+    scrollY,
+    isScrollingUp,
+    headerHeight,
+    scrollHandler,
+    scrollContentPaddingTop,
+  } = scroll();
 
   const { colors } = useTheme();
 
@@ -24,7 +30,7 @@ const App = () => {
       </ScrollAwareHeader>
 
       <AnimatedThemedScrollView
-        contentContainerStyle={{ paddingTop: headerHeight }}
+        contentContainerStyle={{ paddingTop: scrollContentPaddingTop }}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
