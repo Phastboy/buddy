@@ -19,7 +19,7 @@ type ScrollAwareHeaderProps = {
   isScrollingUp: SharedValue<boolean>;
   height?: number;
   fadeDistance?: number;
-  style?: StyleProps;
+  containerStyle?: StyleProps;
   showBackButton?: boolean;
   contentContainerStyle?: StyleProps;
   childrenContainerStyle?: StyleProps;
@@ -31,7 +31,7 @@ const ScrollAwareHeader = ({
   isScrollingUp,
   height = 90,
   fadeDistance = 50,
-  style = {},
+  containerStyle = {},
   contentContainerStyle = {},
   childrenContainerStyle = {},
   showBackButton,
@@ -92,7 +92,7 @@ const ScrollAwareHeader = ({
           borderBottomWidth: StyleSheet.hairlineWidth,
         },
         headerStyle,
-        style,
+        containerStyle,
       ]}
     >
       <AnimatedThemedView
