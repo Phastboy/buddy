@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import {
   useAnimatedStyle,
   interpolate,
@@ -9,6 +9,7 @@ import {
 } from 'react-native-reanimated';
 import AnimatedThemedView from './ui/AnimatedView';
 import useTheme from '@/utils/useTheme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ScrollAwareHeaderProps = {
   children: ReactNode;
@@ -27,6 +28,8 @@ const ScrollAwareHeader = ({
   fadeDistance = 50,
   style = {},
 }: ScrollAwareHeaderProps) => {
+  const { top } = useSafeAreaInsets();
+  const { height: screenHeight } = useWindowDimensions();
   const springConfig = { damping: 20, stiffness: 150 };
   const headerStyle = useAnimatedStyle(() => {
     // Always show if at top or when overscrolling (negative values)
@@ -70,6 +73,8 @@ const ScrollAwareHeader = ({
       style={[
         styles.header,
         { height },
+        { paddingTop: top },
+        { backgroundColor: colors.background },
         headerStyle,
         style,
         { borderBottomColor: colors.muted },
