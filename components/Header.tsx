@@ -8,6 +8,7 @@ import {
   SharedValue,
 } from 'react-native-reanimated';
 import AnimatedThemedView from './ui/AnimatedView';
+import useTheme from '@/utils/useTheme';
 
 type ScrollAwareHeaderProps = {
   children: ReactNode;
@@ -26,6 +27,7 @@ const ScrollAwareHeader = ({
   fadeDistance = 50,
   style = {},
 }: ScrollAwareHeaderProps) => {
+  const springConfig = { damping: 20, stiffness: 150 };
   const headerStyle = useAnimatedStyle(() => {
     // Always show if at top or when overscrolling (negative values)
     if (scrollY.value <= 0) {
@@ -38,8 +40,8 @@ const ScrollAwareHeader = ({
     // Show when scrolling up
     if (isScrollingUp.value) {
       return {
-        opacity: withSpring(1, { damping: 16 }),
-        transform: [{ translateY: withSpring(0, { damping: 16 }) }],
+        opacity: withSpring(1, springConfig),
+        transform: [{ translateY: withSpring(0, springConfig) }],
       };
     }
 
@@ -52,17 +54,27 @@ const ScrollAwareHeader = ({
     );
 
     return {
-      opacity: withSpring(1 - progress, { damping: 16 }),
+      opacity: withSpring(1 - progress, springConfig),
       transform: [
         {
-          translateY: withSpring(-height * progress, { damping: 16 }),
+          translateY: withSpring(-height * progress, springConfig),
         },
       ],
     };
   });
 
+  const { colors } = useTheme();
+
   return (
-    <AnimatedThemedView style={[styles.header, { height }, headerStyle, style]}>
+    <AnimatedThemedView
+      style={[
+        styles.header,
+        { height },
+        headerStyle,
+        style,
+        { borderBottomColor: colors.muted },
+      ]}
+    >
       {children}
     </AnimatedThemedView>
   );
@@ -77,6 +89,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomWidth: 1,
   },
 });
 

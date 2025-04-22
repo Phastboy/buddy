@@ -2,33 +2,13 @@ import ScrollAwareHeader from '@/components/Header';
 import AnimatedThemedScrollView from '@/components/ui/AnimatedScrollView';
 import ThemedText from '@/components/ui/ThemedText';
 import ThemedView from '@/components/ui/ThemedView';
+import scroll from '@/utils/useScrollHandler';
 import useTheme from '@/utils/useTheme';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import {
-  useSharedValue,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
 
 const App = () => {
-  const scrollY = useSharedValue(0);
-  const isScrollingUp = useSharedValue(false);
-  const prevScrollY = useSharedValue(0);
-  const headerHeight = 100;
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      const currentY = event.contentOffset.y;
-
-      // Determine scroll direction with threshold to prevent flickering
-      if (Math.abs(currentY - prevScrollY.value) > 3) {
-        isScrollingUp.value = currentY < prevScrollY.value;
-      }
-
-      scrollY.value = currentY;
-      prevScrollY.value = currentY;
-    },
-  });
+  const { scrollY, isScrollingUp, headerHeight, scrollHandler } = scroll();
 
   const { colors } = useTheme();
 
@@ -47,6 +27,7 @@ const App = () => {
         contentContainerStyle={{ paddingTop: headerHeight }}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
       >
         {/* Your content here */}
         {Array.from({ length: 50 }).map((_, i) => (
