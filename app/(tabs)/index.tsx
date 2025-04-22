@@ -1,4 +1,4 @@
-import ScrollAwareHeader, { TimelineHeader } from '@/components/Header';
+import TimelineHeader from '@/components/headers/TimelineHeader';
 import AnimatedThemedScrollView from '@/components/ui/AnimatedScrollView';
 import ThemedText from '@/components/ui/ThemedText';
 import ThemedView from '@/components/ui/ThemedView';

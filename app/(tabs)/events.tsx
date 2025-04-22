@@ -1,4 +1,4 @@
-import ScrollAwareHeader from '@/components/Header';
+import ScrollAwareHeader from '@/components/headers/ScrollAwareHeader';
 import AnimatedThemedScrollView from '@/components/ui/AnimatedScrollView';
 import ThemedText from '@/components/ui/ThemedText';
 import ThemedView from '@/components/ui/ThemedView';
