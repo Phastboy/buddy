@@ -1,10 +1,22 @@
 import {
   useAnimatedScrollHandler,
   useSharedValue,
+  SharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function scroll(headerHeight: number = 80) {
+interface ScrollHandlerReturn {
+  scrollY: SharedValue<number>;
+  isScrollingUp: SharedValue<boolean>;
+  headerHeight: number;
+  scrollHandler: ReturnType<typeof useAnimatedScrollHandler>;
+  scrollContentPaddingTop: number;
+}
+
+export default function useScrollHandler(
+  headerHeight: number = 80,
+  treshold: number = 10,
+): ScrollHandlerReturn {
   const scrollY = useSharedValue(0);
   const isScrollingUp = useSharedValue(false);
   const prevScrollY = useSharedValue(0);
@@ -15,8 +27,7 @@ export default function scroll(headerHeight: number = 80) {
     onScroll: (event) => {
       const currentY = event.contentOffset.y;
 
-      // Determine scroll direction with threshold to prevent flickering
-      if (Math.abs(currentY - prevScrollY.value) > 3) {
+      if (Math.abs(currentY - prevScrollY.value) > treshold) {
         isScrollingUp.value = currentY < prevScrollY.value;
       }
 

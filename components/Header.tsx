@@ -92,7 +92,7 @@ const ScrollAwareHeader = ({
     >
       <AnimatedThemedView style={styles.contentContainer}>
         {showBackButton && <Back color={colors.color} />}
-        <AnimatedThemedView style={[styles.childrenContainer, ,]}>
+        <AnimatedThemedView style={[styles.childrenContainer, { width }]}>
           {children}
         </AnimatedThemedView>
       </AnimatedThemedView>
