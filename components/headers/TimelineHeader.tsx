@@ -7,6 +7,8 @@ import { useRouter } from 'expo-router';
 import useTheme from '@/utils/useTheme';
 import { useState } from 'react';
 import SideBarNavigation from '../SideBarNav';
+import { Image, Touchable } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 export default function TimelineHeader({
   scrollY,
@@ -48,11 +50,12 @@ export default function TimelineHeader({
 
         {/* Title */}
         <ThemedView style={{ flex: 1, alignItems: 'center' }}>
-          <ThemedText
-            style={{ fontSize: 18, fontWeight: 'bold', color: colors.color }}
-          >
-            Timeline
-          </ThemedText>
+          <TouchableOpacity onPress={() => router.push('/')}>
+            <Image
+              source={require('../../assets/images/logo.png')}
+              style={{ width: 100, height: '100%', resizeMode: 'contain' }}
+            />
+          </TouchableOpacity>
         </ThemedView>
 
         {/* Notification Icon */}

@@ -14,7 +14,7 @@ const App = () => {
     headerHeight,
     scrollHandler,
     scrollContentPaddingTop,
-  } = scroll(40);
+  } = scroll(50);
 
   const { colors } = useTheme();
 
