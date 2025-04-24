@@ -1,11 +1,14 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
+import { Link, Tabs, useNavigation } from 'expo-router';
 import { Pressable } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import UserAvatar from '@/components/headers/userAvatar';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { ParamListBase } from '@react-navigation/native';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -17,6 +20,7 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const navigator = useNavigation<DrawerNavigationProp<ParamListBase>>();
 
   return (
     <Tabs
@@ -46,6 +50,14 @@ export default function TabLayout() {
               </Pressable>
             </Link>
           ),
+          headerLeft: () => (
+            <Pressable onPress={navigator.openDrawer}>
+              <UserAvatar />
+            </Pressable>
+          ),
+          headerLeftContainerStyle: {
+            paddingLeft: 15,
+          },
         }}
       />
       <Tabs.Screen
