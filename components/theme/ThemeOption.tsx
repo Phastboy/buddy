@@ -1,24 +1,39 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import useTheme from '@/utils/useTheme';
-import ThemedText from '../ui/ThemedText';
-import { withAlpha } from '@/theme';
+import { useThemeColors } from '@/utils/useThemeColors';
+import { Text } from '../Themed';
 
-interface IThemeOption {
+/**
+ * Props for the ThemeOption component
+ */
+interface ThemeOptionProps {
   title: string;
   icon: React.ComponentProps<typeof Ionicons>['name'];
-  onPress: () => void;
   isActive: boolean;
+  onPress: () => void;
 }
 
-export default function ThemeOption({
+/**
+ * A selectable theme option component with icon and checkmark
+ * @component
+ * @param {ThemeOptionProps} props - Component props
+ * @returns {React.ReactElement} A themed selectable option
+ * @example
+ * <ThemeOption
+ *   title="Light"
+ *   icon="sunny"
+ *   isActive={mode === 'light'}
+ *   onPress={() => setMode('light')}
+ * />
+ */
+export const ThemeOption = ({
   title,
   icon,
-  onPress,
   isActive,
-}: IThemeOption) {
-  const { colors } = useTheme();
+  onPress,
+}: ThemeOptionProps) => {
+  const colors = useThemeColors();
 
   return (
     <TouchableOpacity
@@ -27,11 +42,14 @@ export default function ThemeOption({
       style={[
         styles.button,
         {
-          backgroundColor: colors.background,
+          backgroundColor: colors.card,
           borderColor: colors.border,
           ...Platform.select({
             ios: {
-              shadow: withAlpha(colors.primary.toString(), 0.1),
+              shadowColor: colors.primary,
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              shadowOffset: { width: 0, height: 2 },
             },
             android: {
               elevation: 2,
@@ -40,35 +58,29 @@ export default function ThemeOption({
         },
       ]}
     >
-      <Ionicons name={icon} size={20} color={colors.color} />
-      <ThemedText style={[styles.text, { color: colors.color }]}>
-        {title.toLowerCase()}
-      </ThemedText>
+      <Ionicons name={icon} size={20} color={colors.inactiveIcon} />
+      <Text style={[styles.text]}>{title}</Text>
       <Ionicons
         name={isActive ? 'checkmark-circle' : 'ellipse-outline'}
-        color={isActive ? colors.primary : colors.color}
+        color={isActive ? colors.primary : colors.text}
         size={20}
       />
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 1,
-    marginTop: 8,
-    marginBottom: 8,
+    marginVertical: 4,
     gap: 12,
   },
   text: {
-    fontSize: 16,
-    fontWeight: '600',
     flex: 1,
-    marginLeft: 8,
+    fontSize: 16,
   },
 });
