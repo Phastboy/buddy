@@ -1,9 +1,7 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs, useNavigation } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Tabs, useNavigation } from 'expo-router';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-import UserAvatar from '@/components/headers/userAvatar';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { ParamListBase } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,7 +29,7 @@ export default function TabLayout() {
         },
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
+        headerShown: useClientOnlyValue(false, false),
         headerStyle: {
           backgroundColor: background,
         },
@@ -49,28 +47,6 @@ export default function TabLayout() {
               color={color}
             />
           ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-          headerLeft: () => (
-            <Pressable onPress={navigator.openDrawer}>
-              <UserAvatar />
-            </Pressable>
-          ),
-          headerLeftContainerStyle: {
-            paddingLeft: 15,
-          },
         }}
       />
       <Tabs.Screen
