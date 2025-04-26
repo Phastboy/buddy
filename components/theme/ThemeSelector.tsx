@@ -1,7 +1,6 @@
 import { ThemeMode } from '@/utils/theme.utils';
 import { useAppTheme } from '@/utils/useTheme';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
 import { ThemeOption } from './ThemeOption';
 import { View } from '../Themed';
 
@@ -12,8 +11,7 @@ import { View } from '../Themed';
  * @example
  * <ThemeSelector />
  */
-export const ThemeSelector = () => {
-  const { colors } = useTheme();
+export const ThemeSelector = (): React.ReactElement => {
   const { mode, setMode } = useAppTheme();
 
   /**
