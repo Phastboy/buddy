@@ -20,7 +20,6 @@ import { styles } from './styles';
  *   scrollY={scrollY}
  *   isScrollingUp={isScrollingUp}
  *   height={100}
- *   fadeDistance={50}
  * >
  *   <Text>My Header</Text>
  * </ScrollAwareHeader>
@@ -30,7 +29,6 @@ const ScrollAwareHeader = ({
   scrollY,
   isScrollingUp,
   height,
-  fadeDistance,
   containerStyle = {},
   childrenContainerStyle = {},
   showBackButton,
@@ -42,13 +40,7 @@ const ScrollAwareHeader = ({
   const springConfig = React.useMemo(getSpringConfig, []);
 
   const headerStyle = useAnimatedStyle(() =>
-    getHeaderAnimationStyle(
-      scrollY,
-      isScrollingUp,
-      springConfig,
-      fadeDistance,
-      height,
-    ),
+    getHeaderAnimationStyle(scrollY, isScrollingUp, springConfig, height),
   );
 
   return (

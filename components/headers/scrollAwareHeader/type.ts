@@ -8,7 +8,6 @@ export interface ScrollAwareHeaderProps {
   scrollY: SharedValue<number>;
   isScrollingUp: SharedValue<boolean>;
   height: number;
-  fadeDistance: number;
   containerStyle?: StyleProps;
   showBackButton?: boolean;
   childrenContainerStyle?: StyleProps;

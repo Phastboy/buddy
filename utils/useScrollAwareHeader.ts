@@ -21,14 +21,7 @@ interface ScrollAwareHeaderReturn {
 }
 
 /**
- * Custom hook that provides scroll awareness for header components
- * @param {ScrollAwareHeaderConfig} [config] - Optional configuration object
- * @returns {ScrollAwareHeaderReturn} Scroll-aware header utilities
- * @property {SharedValue<number>} scrollY - Current scroll position Y value
- * @property {SharedValue<boolean>} isScrollingUp - Whether user is scrolling up
- * @property {SharedValue<'up'|'down'|null>} scrollDirection - Current scroll direction
- * @property {Function} scrollHandler - Scroll event handler for Animated.ScrollView
- * @property {number} scrollEventThrottle - Throttle rate for scroll events
+ * Custom hook to track scroll for animating headers
  */
 export const useScrollAwareHeader = (
   config?: ScrollAwareHeaderConfig,
@@ -38,13 +31,16 @@ export const useScrollAwareHeader = (
   const scrollDirection = useSharedValue<'up' | 'down' | null>(null);
   const prevScrollY = useSharedValue(0);
 
+  const SCROLL_THRESHOLD = 10;
+
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       const currentScrollY = event.contentOffset.y;
       const diff = currentScrollY - prevScrollY.value;
 
-      if (Math.abs(diff) > 2) {
+      if (Math.abs(diff) > SCROLL_THRESHOLD) {
         isScrollingUp.value = diff > 0;
+        scrollDirection.value = diff > 0 ? 'up' : 'down';
       }
 
       prevScrollY.value = currentScrollY;
