@@ -1,4 +1,7 @@
-import { ThemeContext, ThemeContextType } from '@/components/theme/ThemeProvider';
+import {
+  ThemeContext,
+  ThemeContextType,
+} from '@/components/theme/ThemeProvider';
 import { useContext } from 'react';
 
 /**
