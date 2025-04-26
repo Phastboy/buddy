@@ -1,22 +1,11 @@
 import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs, useNavigation } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { ParamListBase } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@/utils/useTheme';
 
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
-
 export default function TabLayout() {
   const { theme } = useAppTheme();
-  const navigator = useNavigation<DrawerNavigationProp<ParamListBase>>();
   const { activeIcon, inactiveIcon, background, text, card } = theme.colors;
 
   return (

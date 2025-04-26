@@ -1,34 +1,71 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '@/components/EditScreenInfo';
+import TimelineHeader from '@/components/headers/timelineheader';
 import { Text, View } from '@/components/Themed';
-import { useAppTheme } from '@/utils/useTheme';
+import { useScrollAwareHeader } from '@/utils/useScrollAwareHeader';
+import { useThemeColors } from '@/utils/useThemeColors';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import Animated from 'react-native-reanimated';
 
-export default function Home() {
-  const { mode } = useAppTheme();
+const App = () => {
+  const {
+    headerHeight,
+    scrollHandler,
+    scrollEventThrottle,
+    scrollY,
+    isScrollingUp,
+  } = useScrollAwareHeader({
+    headerHeight: 40,
+  });
+  const colors = useThemeColors();
   return (
-    <View style={styles.container}>
-      <Text>Current mode: {mode}</Text>
-      <Text style={styles.title}>Home screen</Text>
-      <View style={styles.separator} />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View style={[styles.container, { paddingTop: headerHeight }]}>
+      <TimelineHeader
+        headerHeight={headerHeight}
+        scrollY={scrollY}
+        isScrollingUp={isScrollingUp}
+      />
+
+      <Animated.ScrollView
+        style={{ backgroundColor: colors.background }}
+        onScroll={scrollHandler}
+        scrollEventThrottle={scrollEventThrottle}
+      >
+        {[...Array(50)].map((_, i) => (
+          <Text key={i} style={styles.item}>
+            Item {i + 1}
+          </Text>
+        ))}
+      </Animated.ScrollView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
-  title: {
+  headerContainer: {
+    backgroundColor: '#6200ee',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerText: {
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  scrollView: {
+    flex: 1,
+  },
+  content: {
+    paddingTop: 120,
+  },
+  item: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });
+
+export default App;

@@ -5,6 +5,7 @@ import { useAnimatedScrollHandler } from 'react-native-reanimated';
  * Configuration options for the scroll-aware header hook
  */
 interface ScrollAwareHeaderConfig {
+  headerHeight: number;
   scrollEventThrottle?: number;
   initialScrollY?: number;
 }
@@ -13,6 +14,7 @@ interface ScrollAwareHeaderConfig {
  * Scroll-aware header return type
  */
 interface ScrollAwareHeaderReturn {
+  headerHeight: number;
   scrollY: SharedValue<number>;
   isScrollingUp: SharedValue<boolean>;
   scrollDirection: SharedValue<'up' | 'down' | null>;
@@ -24,7 +26,7 @@ interface ScrollAwareHeaderReturn {
  * Custom hook to track scroll for animating headers
  */
 export const useScrollAwareHeader = (
-  config?: ScrollAwareHeaderConfig,
+  config: ScrollAwareHeaderConfig,
 ): ScrollAwareHeaderReturn => {
   const scrollY = useSharedValue(config?.initialScrollY || 0);
   const isScrollingUp = useSharedValue(false);
@@ -48,7 +50,10 @@ export const useScrollAwareHeader = (
     },
   });
 
+  const headerHeight = config.headerHeight;
+
   return {
+    headerHeight,
     scrollY,
     isScrollingUp,
     scrollDirection,

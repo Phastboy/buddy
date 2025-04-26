@@ -1,3 +1,4 @@
+import { useThemeColors } from '@/utils/useThemeColors';
 import { Ionicons } from '@expo/vector-icons';
 import { Image, ImageStyle } from 'react-native';
 
@@ -11,8 +12,11 @@ export default function UserAvatar({
   avatarUrl?: string;
   style?: ImageStyle;
 }) {
+  const { inactiveIcon } = useThemeColors();
   if (!avatarUrl) {
-    return <Ionicons name="person-circle-outline" size={40} color="gray" />;
+    return (
+      <Ionicons name="person-circle-outline" size={40} color={inactiveIcon} />
+    );
   }
   return (
     <Image
