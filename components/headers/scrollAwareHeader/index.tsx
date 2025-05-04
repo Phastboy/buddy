@@ -1,76 +1,68 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { getSpringConfig, getHeaderAnimationStyle } from './animations';
-import { useThemeColors } from '@/utils/useThemeColors';
-import { ScrollAwareHeaderProps } from './type';
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
+import { snapHeader } from './animations';
+import { StickySnapHeaderProps } from './type';
 import { styles } from './styles';
+import { useThemeColors } from '@/utils/useThemeColors';
+import { View } from '@/components/Themed';
 
-/**
- * A header component that responds to scroll events with animations
- * @component
- * @param {ScrollAwareHeaderProps} props - Component props
- * @returns {React.ReactElement} Animated header component
- *
- * @example
- * <ScrollAwareHeader
- *   scrollY={scrollY}
- *   isScrollingUp={isScrollingUp}
- *   height={100}
- * >
- *   <Text>My Header</Text>
- * </ScrollAwareHeader>
- */
-const ScrollAwareHeader = ({
+export const StickySnapHeader: React.FC<StickySnapHeaderProps> = ({
+  height = 64,
+  headerStyle,
+  headerChildren,
   children,
-  scrollY,
-  isScrollingUp,
-  height,
-  containerStyle = {},
-  childrenContainerStyle = {},
-  showBackButton,
-}: ScrollAwareHeaderProps) => {
-  const { top } = useSafeAreaInsets();
+}) => {
+  const headerTranslateY = useSharedValue(0);
+  const prevScrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      const y = event.contentOffset.y;
+      const deltaY = y - prevScrollY.value;
+      headerTranslateY.value = Math.max(
+        Math.min(headerTranslateY.value - deltaY, 0),
+        -height,
+      );
+      prevScrollY.value = y;
+    },
+    onEndDrag: () => {
+      headerTranslateY.value = snapHeader(headerTranslateY.value, height);
+    },
+  });
+
+  const headerAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+
   const colors = useThemeColors();
-  const router = useRouter();
-
-  const springConfig = React.useMemo(getSpringConfig, []);
-
-  const headerStyle = useAnimatedStyle(() =>
-    getHeaderAnimationStyle(scrollY, isScrollingUp, springConfig, height),
-  );
-
   return (
-    <Animated.View
-      style={[
-        styles.header,
-        {
-          height: height + top,
-          paddingTop: top,
-          backgroundColor: colors.background,
-          borderBottomColor: colors.border,
-          borderBottomWidth: StyleSheet.hairlineWidth,
-        },
-        headerStyle,
-        containerStyle,
-      ]}
-    >
-      <Animated.View style={[styles.childrenContainer, childrenContainerStyle]}>
-        {showBackButton && (
-          <Ionicons
-            name="arrow-back"
-            size={24}
-            color={colors.text}
-            onPress={() => router.back()}
-          />
-        )}
-        {children}
+    <View style={[styles.container]}>
+      <Animated.View
+        style={[
+          styles.header,
+          { height, backgroundColor: colors.background },
+          headerStyle,
+          headerAnimatedStyle,
+        ]}
+        pointerEvents="box-none"
+      >
+        {headerChildren}
       </Animated.View>
-    </Animated.View>
+
+      <Animated.ScrollView
+        scrollEventThrottle={16}
+        onScroll={scrollHandler}
+        contentContainerStyle={{
+          paddingTop: height,
+          backgroundColor: colors.background,
+        }}
+      >
+        {children}
+      </Animated.ScrollView>
+    </View>
   );
 };
-
-export default ScrollAwareHeader;

@@ -1,71 +1,34 @@
+import { StickySnapHeader } from '@/components/headers/scrollAwareHeader';
 import TimelineHeader from '@/components/headers/timelineheader';
-import { Text, View } from '@/components/Themed';
-import { useScrollAwareHeader } from '@/utils/useScrollAwareHeader';
-import { useThemeColors } from '@/utils/useThemeColors';
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { StyleSheet, Text } from 'react-native';
 
-const App = () => {
-  const {
-    headerHeight,
-    scrollHandler,
-    scrollEventThrottle,
-    scrollY,
-    isScrollingUp,
-  } = useScrollAwareHeader({
-    headerHeight: 40,
-  });
-  const colors = useThemeColors();
+export default function HomeScreen() {
   return (
-    <View style={[styles.container, { paddingTop: headerHeight }]}>
-      <TimelineHeader
-        headerHeight={headerHeight}
-        scrollY={scrollY}
-        isScrollingUp={isScrollingUp}
-      />
-
-      <Animated.ScrollView
-        style={{ backgroundColor: colors.background }}
-        onScroll={scrollHandler}
-        scrollEventThrottle={scrollEventThrottle}
-      >
-        {[...Array(50)].map((_, i) => (
-          <Text key={i} style={styles.item}>
-            Item {i + 1}
-          </Text>
-        ))}
-      </Animated.ScrollView>
-    </View>
+    <StickySnapHeader
+      height={64}
+      headerChildren={<TimelineHeader />}
+      headerStyle={{ backgroundColor: 'white' }}
+    >
+      {[...Array(50)].map((_, i) => (
+        <Text key={i} style={styles.item}>
+          Item {i + 1}
+        </Text>
+      ))}
+    </StickySnapHeader>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  headerContainer: {
-    backgroundColor: '#6200ee',
+  item: {
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  headerText: {
-    color: 'white',
+    backgroundColor: 'lightgray',
+    marginVertical: 5,
+    marginHorizontal: 10,
+    borderRadius: 10,
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  content: {
-    paddingTop: 120,
-  },
-  item: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    textAlign: 'center',
   },
 });
-
-export default App;

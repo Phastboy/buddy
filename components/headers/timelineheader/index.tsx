@@ -1,26 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
-import ScrollAwareHeader from '../scrollAwareHeader';
 import { DrawerOpener, Logo, NotificationIcon } from './children';
-import { TimelineHeaderProps } from './types';
 import { styles } from './styles';
+import { View } from '@/components/Themed';
 
 /**
  * TimelineHeader using ScrollAwareHeader under the hood
  */
-const TimelineHeader = ({
-  scrollY,
-  isScrollingUp,
-  headerHeight,
-}: TimelineHeaderProps) => {
+const TimelineHeader = () => {
   return (
-    <ScrollAwareHeader
-      scrollY={scrollY}
-      isScrollingUp={isScrollingUp}
-      height={headerHeight}
-      containerStyle={styles.container}
-      childrenContainerStyle={styles.childrenContainer}
-    >
+    <View style={styles.childrenContainer}>
       <View style={styles.left}>
         <DrawerOpener />
       </View>
@@ -32,7 +20,7 @@ const TimelineHeader = ({
       <View style={styles.right}>
         <NotificationIcon />
       </View>
-    </ScrollAwareHeader>
+    </View>
   );
 };
 

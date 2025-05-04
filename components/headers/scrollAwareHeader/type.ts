@@ -1,14 +1,8 @@
-import { SharedValue, StyleProps } from 'react-native-reanimated';
+import { ViewStyle } from 'react-native';
 
-/**
- * Props for the ScrollAwareHeader component
- */
-export interface ScrollAwareHeaderProps {
+export interface StickySnapHeaderProps {
+  height?: number;
+  headerStyle?: ViewStyle;
+  headerChildren: React.ReactNode;
   children: React.ReactNode;
-  scrollY: SharedValue<number>;
-  isScrollingUp: SharedValue<boolean>;
-  height: number;
-  containerStyle?: StyleProps;
-  showBackButton?: boolean;
-  childrenContainerStyle?: StyleProps;
 }

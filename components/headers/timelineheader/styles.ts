@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    // Background etc. will be handled by ScrollAwareHeader itself
-  },
   childrenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
