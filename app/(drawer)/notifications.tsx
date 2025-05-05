@@ -1,30 +1,11 @@
-import { Text, View } from '@/components/Themed';
-import { StyleSheet } from 'react-native';
+import NotificationHeader from '@/components/headers/notificationHeader';
+import { StickySnapHeader } from '@/components/headers/scrollAwareHeader';
+import { ScrollContent } from '@/components/sampleContent';
 
-export default function Notifications() {
+export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Notifications</Text>
-      <Text style={styles.description}>This is the notifications screen.</Text>
-    </View>
+    <StickySnapHeader height={64} headerChildren={<NotificationHeader />}>
+      <ScrollContent />
+    </StickySnapHeader>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  description: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-  },
-});
